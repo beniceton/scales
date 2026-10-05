@@ -128,8 +128,8 @@
 :root[data-theme="demidov"] .wave{display:none}
 :root[data-theme="demidov"] .core span{font-family:var(--head);font-weight:300;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
 :root[data-theme="demidov"] .art .a,:root[data-theme="demidov"] .art .b{display:none}
-:root[data-theme="demidov"] .art{right:-.6rem;top:-.6rem;width:5.6rem;height:5.6rem;opacity:1}
-:root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .hero .m{max-width:70%}
+:root[data-theme="demidov"] .art{right:.5rem;top:.5rem;width:4.6rem;height:4.6rem;opacity:1}
+:root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .hero .m{max-width:calc(100% - 5.2rem)}
 :root[data-theme="demidov"] .artmark{display:block;width:100%;height:100%;color:#fff;animation:spin 90s linear infinite}
 :root[data-theme="demidov"] .brand{display:flex;align-items:center;gap:.45rem;line-height:1;font-family:var(--head);color:#fff;font-weight:400;font-size:.95rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
 :root[data-theme="demidov"] .brand i{font-style:normal;color:var(--acc)}
@@ -168,8 +168,8 @@ svg{display:block}
 .modes button{color:var(--ink2);border-radius:.9rem;height:2.5rem;padding:0 1rem;font-weight:500;font-size:.95rem;transition:background .2s,color .2s}
 .modes button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow2);font-weight:600}
 .hero{flex:none;border-radius:1.4rem;padding:1.25rem;background:linear-gradient(135deg,var(--lav),var(--lav2));position:relative;overflow:hidden}
-.hero h2{font-weight:600;font-size:1.25rem;line-height:1.3;margin:0;max-width:72%;position:relative;z-index:1}
-.hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1;max-width:80%}
+.hero h2{font-weight:600;font-size:1.25rem;line-height:1.3;margin:0;max-width:calc(100% - 5.5rem);position:relative;z-index:1}
+.hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1;max-width:calc(100% - 5.5rem)}
 .start{margin-top:1rem;border-radius:999px;background:var(--acc);color:#fff;height:2.75rem;padding:0 1.25rem 0 .85rem;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.6rem;box-shadow:0 .5rem 1.2rem rgba(108,140,255,.32);position:relative;z-index:1}
 .start i{width:1.4rem;height:1.4rem;border-radius:50%;background:#fff;display:grid;place-items:center}
 .start i svg{width:.55rem;height:.55rem;fill:var(--acc)}
@@ -438,7 +438,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
   <div class="group">
     <div class="row col"><div class="l"><b>Appearance</b><em id="themeSub"></em></div><div class="seg wide" id="themeSeg"><button data-v="system">Auto</button><button data-v="light">Light</button><button data-v="dark">Dark</button><button data-v="demidov">Demidov</button></div></div>
     <div class="row"><div class="l"><b>Timed length</b><span>Minutes per scale, timed mode</span></div><div class="seg" id="lenSeg"><button data-v="120">2</button><button data-v="180">3</button><button data-v="240">4</button></div></div>
-    <div class="row"><div class="l"><b>Guidance</b><span id="guideSub"></span></div><div class="seg" id="guideSeg"><button data-v="silent">Silent</button><button data-v="release">Release</button><button data-v="full">Full</button></div></div>
+    <div class="row"><div class="l"><b>Guidance</b><span id="guideSub"></span></div><div class="seg" id="guideSeg"><button data-v="silent">Silent</button><button data-v="release">Release</button></div></div>
     <div class="row"><div class="l"><b>Next perception</b><span id="advSub"></span></div><div class="seg" id="advSeg"><button data-v="tap">When I tap</button><button data-v="timed">Timed</button></div></div>
     <div class="row"><div class="l"><b>Vibrate on chime</b><span>Where supported</span></div><button class="sw" id="hapticSw" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
   </div>
@@ -508,6 +508,7 @@ const ICON = { pause:'<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>', play:'<path d="M7
 const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"", guide:"silent", advance:"tap", demidovLight:false }, store.get("dm.settings", {}));
 if(!settings.v3){ settings.v3 = true; settings.pace = 1; settings.volChime = Math.min(settings.volChime, 0.5); }
 if(!settings.v4){ settings.v4 = true; settings.guide = "silent"; settings.advance = "tap"; }
+if(settings.guide === "full") settings.guide = "release";
 store.set("dm.settings", settings);
 const save = () => store.set("dm.settings", settings);
 let perceptions = store.get("dm.perceptions", null);
@@ -638,14 +639,8 @@ function makeScale(perception, i){
   if(i === 0 && g !== "silent"){ cues.push({ t:3, parts:[T.intro], show:"Sit easily. Something will be there straight away." }); t0 = 3 + clipDur(T.intro) + 3; }
   cues.push({ t:Math.round(t0), parts:[perception + "."], show:g === "silent" ? "" : "Surrender to what is already there, however small.", perc:true });
   if(g !== "silent"){
-    const rel = T.scaleCues.slice(3).map(x => x[1]);
     const relStart = Math.max(t0 + clipDur(perception + ".") + 12, D - 3 - seqDur(rel));
-    if(g === "full"){
-      const mid = T.scaleCues.slice(0, 3).map(x => x[1]);
-      const open = t0 + clipDur(perception + ".") + 10, close = relStart - 6, span = close - open; let last = -Infinity;
-      mid.forEach((text, j) => { let t = open + span * [0.08, 0.46, 0.84][j]; if(t < last + 6) t = last + 6; if(t + clipDur(text) <= close){ cues.push({ t:Math.round(t), parts:[text], show:text }); last = t + clipDur(text); } });
-    }
-    cues.push({ t:Math.round(relStart), parts:rel, show:rel[0] + " " + rel[1], release:true });
+    cues.push({ t:Math.round(relStart), parts:rel, show:rel[0], release:true });
   }
   return { kind:"scale", title:perception, label:`Scale ${i + 1} of ${SCALES}`, dur:D, cues };
 }
@@ -673,7 +668,7 @@ function renderHome(){
   $("hapticSw").setAttribute("aria-checked", settings.haptic);
   $("lenSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.scaleDur ? "true" : "false"));
   $("guideSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.guide ? "true" : "false"));
-  $("guideSub").textContent = settings.guide === "silent" ? "Perception, then silence" : settings.guide === "release" ? "Short release lines when you let it go" : (settings.advance === "tap" ? "Release lines when you let it go" : "Prompts through the scale, then the release");
+  $("guideSub").textContent = settings.guide === "silent" ? "Perception, then silence" : "Short release lines when you let it go";
   $("advSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.advance ? "true" : "false"));
   $("advSub").textContent = settings.advance === "tap" ? "Stay with it until it fades, then tap" : `Moves on after ${settings.scaleDur / 60} minutes`;
   sliderUI("volChime", Math.round(settings.volChime * 100)); sliderLabels();
@@ -842,7 +837,7 @@ $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.tr
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
 
 /* ---------- refresh: pull down on the home screen, or the settings button ---------- */
-const VERSION = "20261005-1132";
+const VERSION = "20261005-1138";
 $("verSub").textContent = "Build " + VERSION;
 function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
 $("updateBtn").addEventListener("click", hardReload);
