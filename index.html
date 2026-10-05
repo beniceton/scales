@@ -340,6 +340,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
   <div class="group">
     <div class="row"><div class="l"><b>Appearance</b></div><div class="seg" id="themeSeg"><button data-v="system">Auto</button><button data-v="light">Light</button><button data-v="dark">Dark</button></div></div>
     <div class="row"><div class="l"><b>Each perception</b><span>Minutes per scale</span></div><div class="seg" id="lenSeg"><button data-v="120">2</button><button data-v="180">3</button><button data-v="240">4</button></div></div>
+    <div class="row"><div class="l"><b>Guidance</b><span id="guideSub"></span></div><div class="seg" id="guideSeg"><button data-v="full">Full</button><button data-v="release">Release</button><button data-v="silent">Silent</button></div></div>
     <div class="row"><div class="l"><b>Vibrate on chime</b><span>Where supported</span></div><button class="sw" id="hapticSw" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
   </div>
   <div class="group">
@@ -404,7 +405,7 @@ const ICON = { pause:'<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>', play:'<path d="M7
   sound:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15 9.5a3.5 3.5 0 0 1 0 5"/><path d="M17.5 7a7 7 0 0 1 0 10"/>', muted:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>' };
 
 /* ---------- settings ---------- */
-const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"" }, store.get("dm.settings", {}));
+const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"", guide:"full" }, store.get("dm.settings", {}));
 if(!settings.v3){ settings.v3 = true; settings.pace = 1; settings.volChime = Math.min(settings.volChime, 0.5); }
 store.set("dm.settings", settings);
 const save = () => store.set("dm.settings", settings);
@@ -522,14 +523,19 @@ function draw(n, exclude){
 }
 let phases = [], TOTAL = 0, mode = "full", drawn = [];
 function makeScale(perception, i){
-  const D = settings.scaleDur, cues = []; let t0 = 6;
-  if(i === 0){ cues.push({ t:3, parts:[T.intro], show:"Sit easily. Let whatever happens, happen." }); t0 = 3 + clipDur(T.intro) + 3; }
-  cues.push({ t:Math.round(t0), parts:[perception + "."], show:"Take it in. Let the reaction come by itself.", perc:true });
-  const mid = T.scaleCues.slice(0, 3).map(x => x[1]), rel = T.scaleCues.slice(3).map(x => x[1]);
-  const relStart = Math.max(t0 + clipDur(perception + ".") + 12, D - 3 - seqDur(rel));
-  const open = t0 + clipDur(perception + ".") + 10, close = relStart - 6, span = close - open; let last = -Infinity;
-  mid.forEach((text, j) => { let t = open + span * [0.08, 0.46, 0.84][j]; if(t < last + 6) t = last + 6; if(t + clipDur(text) <= close){ cues.push({ t:Math.round(t), parts:[text], show:text }); last = t + clipDur(text); } });
-  cues.push({ t:Math.round(relStart), parts:rel, show:rel[0] + " " + rel[1], release:true });
+  const D = settings.scaleDur, g = settings.guide, cues = []; let t0 = 6;
+  if(i === 0 && g !== "silent"){ cues.push({ t:3, parts:[T.intro], show:"Sit easily. Let whatever happens, happen." }); t0 = 3 + clipDur(T.intro) + 3; }
+  cues.push({ t:Math.round(t0), parts:[perception + "."], show:g === "silent" ? "" : "Take it in. Let the reaction come by itself.", perc:true });
+  if(g !== "silent"){
+    const rel = T.scaleCues.slice(3).map(x => x[1]);
+    const relStart = Math.max(t0 + clipDur(perception + ".") + 12, D - 3 - seqDur(rel));
+    if(g === "full"){
+      const mid = T.scaleCues.slice(0, 3).map(x => x[1]);
+      const open = t0 + clipDur(perception + ".") + 10, close = relStart - 6, span = close - open; let last = -Infinity;
+      mid.forEach((text, j) => { let t = open + span * [0.08, 0.46, 0.84][j]; if(t < last + 6) t = last + 6; if(t + clipDur(text) <= close){ cues.push({ t:Math.round(t), parts:[text], show:text }); last = t + clipDur(text); } });
+    }
+    cues.push({ t:Math.round(relStart), parts:rel, show:rel[0] + " " + rel[1], release:true });
+  }
   return { kind:"scale", title:perception, label:`Scale ${i + 1} of ${SCALES}`, dur:D, cues };
 }
 function buildPhases(){
@@ -553,6 +559,8 @@ function renderHome(){
   $("percSub").textContent = `${perceptions.length} in the deck`;
   $("hapticSw").setAttribute("aria-checked", settings.haptic);
   $("lenSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.scaleDur ? "true" : "false"));
+  $("guideSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.guide ? "true" : "false"));
+  $("guideSub").textContent = settings.guide === "full" ? "Perception, prompts and release" : settings.guide === "release" ? "Perception, silence, then the release" : "Perception, then silence until the chime";
   sliderUI("volChime", Math.round(settings.volChime * 100)); sliderLabels();
 }
 function renderWeek(log){
@@ -616,6 +624,7 @@ $("removePack").addEventListener("click", async () => { await idbDel("voicePack"
 let resetArm = 0; $("resetBtn").addEventListener("click", () => { const now = Date.now(); if(now - resetArm < 3500){ resetArm = 0; ["dm.log", "dm.recent", "dm.reflections"].forEach(store.del); renderHome(); toast("Progress cleared"); } else { resetArm = now; toast("Tap Reset again to clear streak, log and notes"); } });
 $("hapticSw").addEventListener("click", e => { settings.haptic = !settings.haptic; save(); e.currentTarget.setAttribute("aria-checked", settings.haptic); vibrate(20); });
 $("lenSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.scaleDur = +b.dataset.v; save(); renderHome(); });
+$("guideSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.guide = b.dataset.v; save(); renderHome(); vibrate(10); });
 
 /* ---------- sliders ---------- */
 function sliderUI(id, v){ const el = $(id); el.value = v; el.style.setProperty("--p", ((v - el.min) / (el.max - el.min) * 100) + "%"); }
@@ -655,7 +664,7 @@ function tick(){
     const si = phases.filter((x, k) => x.kind === "scale" && k < i).length;
     $("dots").querySelectorAll("i").forEach((d, k) => { d.className = p.kind === "scale" ? (k < si ? "d" : k === si ? "c" : "") : ""; });
   }
-  p.cues.forEach((c, j) => { const k = i + ":" + j; if(!fired.has(k) && t >= c.t){ fired.add(k); if(t - c.t < 4){ if(c.perc){ $("perc").textContent = p.title; $("perc").classList.add("on"); } $("prompt").textContent = c.show; $("prompt").classList.add("on"); if(c.release) $("perc").style.opacity = ".35"; curCue = c; speak(c.parts); } } });
+  p.cues.forEach((c, j) => { const k = i + ":" + j; if(!fired.has(k) && t >= c.t){ fired.add(k); if(t - c.t < 4){ if(c.perc){ $("perc").textContent = p.title; $("perc").classList.add("on"); } $("prompt").textContent = c.show; $("prompt").classList.toggle("on", !!c.show); if(c.release) $("perc").style.opacity = ".35"; curCue = c; speak(c.parts); } } });
   $("phaseClock").textContent = fmt(p.dur - t) + " left in this " + (p.kind === "scale" ? "scale" : "part");
   $("total").textContent = fmt(TOTAL - e); $("wtL").textContent = fmt(t); $("wtR").textContent = fmt(p.dur);
   const bs = $("bars").children, n = bs.length, head = Math.min(n - 1, Math.floor(t / p.dur * n)), live = audioEl && !audioEl.paused && !audioEl.ended;
