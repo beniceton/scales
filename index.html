@@ -837,7 +837,7 @@ $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.tr
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
 
 /* ---------- refresh: pull down on the home screen, or the settings button ---------- */
-const VERSION = "20261005-1138";
+const VERSION = "20261005-1142";
 $("verSub").textContent = "Build " + VERSION;
 function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
 $("updateBtn").addEventListener("click", hardReload);
@@ -849,6 +849,23 @@ $("updateBtn").addEventListener("click", hardReload);
   home.addEventListener("touchend", end); home.addEventListener("touchcancel", end);
 })();
 if(location.search.includes("v=")) history.replaceState(null, "", location.pathname);
+/* automatic update check: a tiny HEAD request compares the server's file stamp with the one this copy was loaded from */
+let lastCheck = 0;
+async function checkUpdate(){
+  if(location.protocol === "file:" || running) return;
+  const now = Date.now(); if(now - lastCheck < 60000) return; lastCheck = now;
+  try{
+    const r = await fetch(location.pathname, { method:"HEAD", cache:"no-store" });
+    const stamp = (r.headers.get("etag") || "") + "|" + (r.headers.get("last-modified") || "");
+    if(stamp === "|") return;
+    const seen = store.get("dm.stamp", null);
+    if(seen === null || seen === stamp){ store.set("dm.stamp", stamp); return; }
+    store.set("dm.stamp", stamp); toast("New version found, updating…"); setTimeout(hardReload, 900);
+  }catch(e){}
+}
+checkUpdate();
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") checkUpdate(); });
+window.addEventListener("pageshow", e => { if(e.persisted) checkUpdate(); });
 
 applyTheme(); setIcons(); renderHome(); loadPack();
 })();
