@@ -118,6 +118,9 @@
 :root[data-theme="demidov"][data-variant="light"] .seg button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .chips button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .pill.primary{background:#000;color:#fff}
 :root[data-theme="demidov"][data-variant="light"] .core span{color:#000}
 :root[data-theme="demidov"][data-variant="light"] textarea{background:#fff}
+.ptr{position:fixed;left:0;right:0;top:var(--sat);z-index:15;display:flex;justify-content:center;pointer-events:none;transform:translateY(-3rem);transition:transform .2s}
+.ptr span{background:var(--card);color:var(--ink2);box-shadow:var(--shadow2);border-radius:999px;padding:.45rem .9rem;font-size:.78rem;font-weight:600}
+.ptr.arm span{color:var(--acc)}
 .mark,.artmark,.brand{display:none}
 :root[data-theme="demidov"] .mark{display:block;position:absolute;inset:-4%;width:108%;height:108%;color:#fff;will-change:transform}
 :root[data-theme="demidov"] .ring{display:none}
@@ -329,6 +332,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
 </head>
 <body>
 <div class="wash"></div>
+<div class="ptr" id="ptr"><span id="ptrT">Pull to refresh</span></div>
 <div class="app">
 
 <!-- ================= HOME ================= -->
@@ -441,6 +445,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
   <div class="group">
     <div class="row"><div class="l"><b>Perceptions</b><span id="percSub"></span></div><button class="link" id="editBtn">Edit</button></div>
     <div class="row"><div class="l"><b>Progress</b><span id="progSub"></span></div><button class="link" id="resetBtn">Reset</button></div>
+    <div class="row"><div class="l"><b>App version</b><span id="verSub"></span></div><button class="link" id="updateBtn">Check for update</button></div>
   </div>
   <div class="bar2"><button class="pill primary" id="closeSettings">Done</button></div>
 </div>
@@ -832,6 +837,20 @@ $("muteBtn").addEventListener("click", () => { muted = !muted; if(muted) stopSpe
 let endArm = 0; $("endBtn").addEventListener("click", () => { const now = Date.now(); if(now - endArm < 3500){ endArm = 0; finish(false); toast("Session ended"); } else { endArm = now; toast("Tap again to end the session"); vibrate(10); } });
 $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.trim(); if(txt){ const r = store.get("dm.reflections", []); r.push({ at:Date.now(), text:txt, perceptions:drawn }); store.set("dm.reflections", r); } show("home"); renderHome(); });
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
+
+/* ---------- refresh: pull down on the home screen, or the settings button ---------- */
+const VERSION = "20261005-1127";
+$("verSub").textContent = "Build " + VERSION;
+function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
+$("updateBtn").addEventListener("click", hardReload);
+(function(){
+  let y0 = null, pulled = 0; const ptr = $("ptr"), home = $("home");
+  home.addEventListener("touchstart", e => { if(window.scrollY <= 0 && home.classList.contains("on")) y0 = e.touches[0].clientY; else y0 = null; }, { passive:true });
+  home.addEventListener("touchmove", e => { if(y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); if(pulled > 10){ ptr.style.transform = `translateY(${Math.min(pulled * 0.4, 70) - 48}px)`; ptr.classList.toggle("arm", pulled > 110); $("ptrT").textContent = pulled > 110 ? "Release to update" : "Pull to refresh"; } }, { passive:true });
+  const end = () => { if(y0 != null && pulled > 110) hardReload(); y0 = null; pulled = 0; ptr.style.transform = ""; ptr.classList.remove("arm"); };
+  home.addEventListener("touchend", end); home.addEventListener("touchcancel", end);
+})();
+if(location.search.includes("v=")) history.replaceState(null, "", location.pathname);
 
 applyTheme(); setIcons(); renderHome(); loadPack();
 })();
