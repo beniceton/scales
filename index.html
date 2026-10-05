@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="build" content="20261005-1541">
+<meta name="build" content="20261005-1546">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" id="metaTheme" content="#F3F4F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -566,7 +566,7 @@ function renderVoice(){
   $("packSub").textContent = pack ? `${packName()} · ${covered}/${perceptions.length} perceptions` : "Device voice";
   $("packState").textContent = pack ? `${packName()}: ${Object.keys(pack.clips).length} recorded lines. ${covered} of ${perceptions.length} perceptions have audio; anything else uses the device voice.` : "The device voice is in use.";
   $("removePack").style.display = imported ? "" : "none";
-  $("foot").textContent = pack ? `Narrated by ${packName()}` : "Narrated by your device voice";
+  $("foot").textContent = (pack ? `Narrated by ${packName()}` : "Narrated by your device voice") + (navigator.onLine === false ? " · no connection, working offline" : " · works offline");
   $("voiceLbl").textContent = "Voice: " + packName();
   sliderUI("volNarr", Math.round(settings.volNarr * 100)); sliderUI("pace", Math.round(settings.pace * 100)); sliderLabels();
 }
@@ -838,7 +838,7 @@ $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.tr
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
 
 /* ---------- refresh: pull down on the home screen, or the settings button ---------- */
-const VERSION = "20261005-1541";
+const VERSION = "20261005-1546";
 $("verSub").textContent = "Build " + VERSION;
 function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
 $("updateBtn").addEventListener("click", hardReload);
@@ -867,7 +867,12 @@ async function checkUpdate(){
 setTimeout(checkUpdate, 1500);
 document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") checkUpdate(); });
 
-applyTheme(); setIcons(); renderHome(); loadPack();
+/* offline: a service worker keeps the app shell and fonts cached once it has loaded over https */
+if("serviceWorker" in navigator && location.protocol === "https:" && !/claude\.ai$/.test(location.hostname)){ navigator.serviceWorker.register("sw.js").catch(() => {}); }
+function netState(){ document.body.classList.toggle("offline", navigator.onLine === false); renderVoice(); }
+window.addEventListener("online", netState); window.addEventListener("offline", netState);
+
+applyTheme(); setIcons(); renderHome(); loadPack(); netState();
 })();
 </script>
 </body>
