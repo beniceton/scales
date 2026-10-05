@@ -91,8 +91,8 @@
 :root[data-theme="demidov"] .seg button[aria-pressed="true"],:root[data-theme="demidov"] .chips button[aria-pressed="true"],:root[data-theme="demidov"] .pill.primary{background:#fff;color:#000}
 :root[data-theme="demidov"] .sw[aria-checked="true"]{background:var(--acc)}
 :root[data-theme="demidov"] .link{color:var(--acc)}
-:root[data-theme="demidov"] .foot{text-transform:uppercase;letter-spacing:.14em;font-size:.62rem}
-:root[data-theme="demidov"] .foot::after{content:" · Demidov Studio London";color:var(--acc)}
+:root[data-theme="demidov"] .foot{text-transform:uppercase;letter-spacing:.08em;font-size:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root[data-theme="demidov"] .foot::after{content:" · Demidov Studio";color:var(--acc)}
 
 :root[data-theme="demidov"][data-variant="light"]{
   --bg:#FFFFFF; --card:#F6F6F6; --card2:#EFEFEF; --line:#E4E4E4; --line2:#D2D2D2;
@@ -128,7 +128,8 @@
 :root[data-theme="demidov"] .wave{display:none}
 :root[data-theme="demidov"] .core span{font-family:var(--head);font-weight:300;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
 :root[data-theme="demidov"] .art .a,:root[data-theme="demidov"] .art .b{display:none}
-:root[data-theme="demidov"] .art{right:-1.2rem;top:-1.2rem;width:8rem;height:8rem;opacity:1}
+:root[data-theme="demidov"] .art{right:-.6rem;top:-.6rem;width:5.6rem;height:5.6rem;opacity:1}
+:root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .hero .m{max-width:70%}
 :root[data-theme="demidov"] .artmark{display:block;width:100%;height:100%;color:#fff;animation:spin 90s linear infinite}
 :root[data-theme="demidov"] .brand{display:flex;align-items:center;gap:.45rem;line-height:1;font-family:var(--head);color:#fff;font-weight:400;font-size:.95rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
 :root[data-theme="demidov"] .brand i{font-style:normal;color:var(--acc)}
@@ -168,7 +169,7 @@ svg{display:block}
 .modes button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow2);font-weight:600}
 .hero{flex:none;border-radius:1.4rem;padding:1.25rem;background:linear-gradient(135deg,var(--lav),var(--lav2));position:relative;overflow:hidden}
 .hero h2{font-weight:600;font-size:1.25rem;line-height:1.3;margin:0;max-width:72%;position:relative;z-index:1}
-.hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1}
+.hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1;max-width:80%}
 .start{margin-top:1rem;border-radius:999px;background:var(--acc);color:#fff;height:2.75rem;padding:0 1.25rem 0 .85rem;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.6rem;box-shadow:0 .5rem 1.2rem rgba(108,140,255,.32);position:relative;z-index:1}
 .start i{width:1.4rem;height:1.4rem;border-radius:50%;background:#fff;display:grid;place-items:center}
 .start i svg{width:.55rem;height:.55rem;fill:var(--acc)}
@@ -302,6 +303,8 @@ textarea::placeholder{color:var(--ink3)}
 .seg{display:flex;background:var(--card2);border-radius:999px;padding:.2rem}
 .seg button{border-radius:999px;height:2rem;padding:0 .7rem;font-size:.8rem;font-weight:600;color:var(--ink2);white-space:nowrap}
 .seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.seg.wide{width:100%;margin-top:.35rem}
+.seg.wide button{flex:1;padding:0}
 .chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end}
 .chips button{background:var(--card2);border-radius:999px;height:2.1rem;padding:0 .9rem;font-size:.82rem;font-weight:600;color:var(--ink2)}
 .chips button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
@@ -433,7 +436,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
 <div class="sheet" id="settings" role="dialog" aria-modal="true" aria-label="Settings">
   <div class="grab"></div><h3>Settings</h3>
   <div class="group">
-    <div class="row"><div class="l"><b>Appearance</b><span id="themeSub"></span></div><div class="seg" id="themeSeg"><button data-v="system">Auto</button><button data-v="light">Light</button><button data-v="dark">Dark</button><button data-v="demidov">Demidov</button></div></div>
+    <div class="row col"><div class="l"><b>Appearance</b><em id="themeSub"></em></div><div class="seg wide" id="themeSeg"><button data-v="system">Auto</button><button data-v="light">Light</button><button data-v="dark">Dark</button><button data-v="demidov">Demidov</button></div></div>
     <div class="row"><div class="l"><b>Timed length</b><span>Minutes per scale, timed mode</span></div><div class="seg" id="lenSeg"><button data-v="120">2</button><button data-v="180">3</button><button data-v="240">4</button></div></div>
     <div class="row"><div class="l"><b>Guidance</b><span id="guideSub"></span></div><div class="seg" id="guideSeg"><button data-v="silent">Silent</button><button data-v="release">Release</button><button data-v="full">Full</button></div></div>
     <div class="row"><div class="l"><b>Next perception</b><span id="advSub"></span></div><div class="seg" id="advSeg"><button data-v="tap">When I tap</button><button data-v="timed">Timed</button></div></div>
@@ -518,7 +521,7 @@ function applyTheme(){
   const dark = settings.theme === "dark" || (settings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
   $("metaTheme").setAttribute("content", settings.theme === "demidov" ? (settings.demidovLight ? "#FFFFFF" : "#000000") : dark ? "#0E1015" : "#F3F4F8");
   $("themeSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.theme ? "true" : "false"));
-  $("themeSub").textContent = settings.theme === "demidov" ? ("Demidov Studio London · " + (settings.demidovLight ? "light" : "dark") + " · tap the sun/moon to switch") : "";
+  $("themeSub").textContent = settings.theme === "demidov" ? ((settings.demidovLight ? "Light" : "Dark") + " · sun/moon switches") : "";
 }
 $("themeBtn").addEventListener("click", () => {
   if(settings.theme === "demidov"){ settings.demidovLight = !settings.demidovLight; save(); applyTheme(); return; }
@@ -561,7 +564,7 @@ function renderVoice(){
   $("packSub").textContent = pack ? `${packName()} · ${covered}/${perceptions.length} perceptions` : "Device voice";
   $("packState").textContent = pack ? `${packName()}: ${Object.keys(pack.clips).length} recorded lines. ${covered} of ${perceptions.length} perceptions have audio; anything else uses the device voice.` : "The device voice is in use.";
   $("removePack").style.display = imported ? "" : "none";
-  $("foot").textContent = pack ? `Narrated by ${packName()} · offline` : "Narrated by your device voice";
+  $("foot").textContent = pack ? `Narrated by ${packName()}` : "Narrated by your device voice";
   $("voiceLbl").textContent = "Voice: " + packName();
   sliderUI("volNarr", Math.round(settings.volNarr * 100)); sliderUI("pace", Math.round(settings.pace * 100)); sliderLabels();
 }
@@ -839,7 +842,7 @@ $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.tr
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
 
 /* ---------- refresh: pull down on the home screen, or the settings button ---------- */
-const VERSION = "20261005-1127";
+const VERSION = "20261005-1132";
 $("verSub").textContent = "Build " + VERSION;
 function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
 $("updateBtn").addEventListener("click", hardReload);
