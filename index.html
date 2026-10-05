@@ -2,6 +2,7 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
+<meta name="build" content="20261005-1541">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="theme-color" id="metaTheme" content="#F3F4F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -837,7 +838,7 @@ $("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.tr
 document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
 
 /* ---------- refresh: pull down on the home screen, or the settings button ---------- */
-const VERSION = "20261005-1142";
+const VERSION = "20261005-1541";
 $("verSub").textContent = "Build " + VERSION;
 function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
 $("updateBtn").addEventListener("click", hardReload);
@@ -849,23 +850,22 @@ $("updateBtn").addEventListener("click", hardReload);
   home.addEventListener("touchend", end); home.addEventListener("touchcancel", end);
 })();
 if(location.search.includes("v=")) history.replaceState(null, "", location.pathname);
-/* automatic update check: a tiny HEAD request compares the server's file stamp with the one this copy was loaded from */
+/* automatic update check: read the build stamp from the first bytes of the live file and compare with this copy */
 let lastCheck = 0;
 async function checkUpdate(){
   if(location.protocol === "file:" || running) return;
-  const now = Date.now(); if(now - lastCheck < 60000) return; lastCheck = now;
+  const now = Date.now(); if(now - lastCheck < 300000) return; lastCheck = now;
   try{
-    const r = await fetch(location.pathname, { method:"HEAD", cache:"no-store" });
-    const stamp = (r.headers.get("etag") || "") + "|" + (r.headers.get("last-modified") || "");
-    if(stamp === "|") return;
-    const seen = store.get("dm.stamp", null);
-    if(seen === null || seen === stamp){ store.set("dm.stamp", stamp); return; }
-    store.set("dm.stamp", stamp); toast("New version found, updating…"); setTimeout(hardReload, 900);
+    const r = await fetch(location.pathname + "?c=" + now, { headers:{ Range:"bytes=0-1500" }, cache:"no-store" });
+    if(!r.ok) return;
+    const m = (await r.text()).match(/name="build" content="([^"]+)"/); if(!m) return;
+    const live = m[1]; if(live === VERSION) return;
+    if(store.get("dm.reloadedFor", "") === live) return;   /* already tried once for this build; never loop */
+    store.set("dm.reloadedFor", live); toast("New version found, updating…"); setTimeout(hardReload, 900);
   }catch(e){}
 }
-checkUpdate();
+setTimeout(checkUpdate, 1500);
 document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") checkUpdate(); });
-window.addEventListener("pageshow", e => { if(e.persisted) checkUpdate(); });
 
 applyTheme(); setIcons(); renderHome(); loadPack();
 })();
