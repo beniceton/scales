@@ -233,7 +233,7 @@ svg{display:block}
 /* ================= tab bar ================= */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;max-width:30rem;margin:0 auto;background:var(--card);border-radius:1.3rem 1.3rem 0 0;box-shadow:0 -.5rem 1.8rem rgba(20,30,60,.08);height:calc(var(--tabs) + var(--sab));padding:0 1rem var(--sab);display:flex;justify-content:space-around;align-items:center;transition:transform .35s}
 .tabs.hide{transform:translateY(110%)}
-.tab{color:var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;width:4.4rem;height:3.4rem;font-size:.68rem;font-weight:600;position:relative}
+.tab{color:var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;width:3.9rem;height:3.4rem;font-size:.66rem;font-weight:600;position:relative}
 .tab svg{width:1.35rem;height:1.35rem}
 .tab[aria-pressed="true"]{color:var(--ink)}
 .tab[aria-pressed="true"]::after{content:"";position:absolute;bottom:.15rem;width:.25rem;height:.25rem;border-radius:50%;background:var(--ink)}
@@ -259,6 +259,16 @@ svg{display:block}
 .hist li{display:flex;justify-content:space-between;gap:.75rem;padding:.75rem 0;border-top:1px solid var(--line);font-size:.92rem}
 .hist li:first-child{border-top:0}
 .hist li span{color:var(--ink2);font-size:.8rem;text-align:right;max-width:58%}
+
+/* ================= guide ================= */
+#guide{gap:.75rem}
+.gtext{padding:1rem 1.1rem}
+.gtext h4{margin:.2rem 0 .35rem;font-weight:600;font-size:1rem}
+.gtext h4+h4{margin-top:.6rem}
+.gtext p{margin:0 0 .6rem;font-size:.9rem;line-height:1.5;color:var(--ink)}
+.gtext p.src{color:var(--ink2);font-size:.8rem}
+.gtext p.how{color:var(--ink2);font-size:.84rem;border-top:1px solid var(--line);padding-top:.6rem;margin-top:.2rem}
+:root[data-theme="demidov"] .gtext h4{font-family:var(--head);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:.85rem}
 
 /* ================= session ================= */
 #session{--gap:0}
@@ -412,6 +422,35 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
   <div class="card hist"><ul id="hist"></ul></div>
 </section>
 
+<!-- ================= GUIDE ================= -->
+<section class="screen tabbed" id="guide">
+  <div class="top"><span class="title" style="margin:0 auto">Guide</span></div>
+  <div class="card gtext">
+    <h4>Scales</h4>
+    <p class="src">Sensations, times, places and events. From the Demidov Studio London notes.</p>
+    <p>"Make several lists. Each list should contain 50 or more themes. One of the lists may consist of themes connected with physical sensations: cold… hot… warm bathtub, sitting on a wet surface, etc. Another list may consist of themes connected with more complex circumstances, such as events and places: someone just knocked on my window… ship cabin… prison cell… I am expecting a phone call… I am expecting someone's arrival… etc. Do not choose any "extraordinary", psychologically heightened themes."</p>
+    <p>"Take one of the theme lists and, since it is important to receive an unexpected impression, put your finger arbitrarily onto one of the themes. Read the theme you just picked. Let's say you picked "mosquito bites": immediately, without any thinking, yield to spontaneous sensations, movements, thought, to everything that comes to you as a reaction to the words you read."</p>
+    <p>"Don't rush to move to the next theme until you've exhausted the previous theme. Rest for a few minutes, then take another theme. No need to exercise many themes in one session, so as not to get accustomed to approximating the truth."</p>
+    <p class="how">In this app: the chime is the finger landing on the list. The theme is read once, then silence. Stay with it until it has faded, tap, and the next theme comes with the next chime. A rest between themes can be set in Settings.</p>
+  </div>
+  <div class="card gtext">
+    <h4>Lump of Faith</h4>
+    <p>"I sit calmly and make sure I am in a calm place. Then I think of something, I ask myself 'can I do that', and then I immediately follow through and do it. I return to my original place and sense the glow of having succeeded. I rest for a moment, and think of something else. Don't do too many of these. Probably four or five maximum."</p>
+    <h4>Three Minutes of Freedom</h4>
+    <p>"For the next three minutes, I will give myself complete freedom to think what I feel like thinking, feel what I feel like feeling and do what I feel like doing. This could be done at the end of any of these exercises."</p>
+  </div>
+  <div class="card gtext">
+    <h4>ANA Breath Meditation</h4>
+    <p class="src">A Sufi-inspired Demidov practice for sensing the "I Am" and for singularity.</p>
+    <p>Find a quiet space to sit or lie down comfortably. Sense the asana of your position. Allow your body to settle and your breath to soften. Become aware of your natural breathing; no need to control it, just notice.</p>
+    <p>On the inhale, say either internally, or as a whisper or quietly voiced, "Ana" (stress on the second syllable: An-aa). Let it settle more and more in your centre. On the exhale, repeat softly: "Ana". Continue this rhythm. Let the word gently mirror your existence, not as a thought but as a sensation. You are not affirming anything. You are simply being.</p>
+    <p>After a few minutes, shift to: inhale "Ana", exhale "Hu" (The One, divine presence). This rhythm becomes a living echo of "I… am". Then shift to "I" on the inhale, "am" on the exhale. After a while, let the words fade into nothingness, and just stay with observing the breath.</p>
+    <h4>Asana of body position in space</h4>
+    <p>When you feel a sense of stillness, allow the eyes to gently open. Let the space arrive to you, without seeking. Allow the eye to land on a specific point in space. Let that point be admitted through the breath, not stared at but received. Follow the body's natural urge to move toward that point, slowly, intuitively. Don't decide in advance how the body will be when it arrives. Let the body decide. Let it settle. When a clear sense of being singularly in that place is fully present, and only then, say out loud: "I am." Notice what that feels like. Then let the eye land on a new point, and repeat. Not too many times; the point is not repetition, but to truly sense the asana of each shift.</p>
+  </div>
+  <p class="foot" style="margin-top:.5rem">Texts from Demidov Studio London · demidovstudiolondon.com</p>
+</section>
+
 <!-- ================= SESSION ================= -->
 <section class="screen" id="session">
   <div class="top">
@@ -459,6 +498,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
 <nav class="tabs" id="tabs">
   <button class="tab" data-tab="home" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
   <button class="tab" data-tab="progress" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Progress</button>
+  <button class="tab" data-tab="guide" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4zM20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>Guide</button>
   <button class="tab" data-tab="voice" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M12 4a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V7a3 3 0 0 1 3-3z"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>Voice</button>
   <button class="tab" data-tab="settings" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg>Settings</button>
 </nav>
@@ -475,7 +515,7 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
     <div class="row"><div class="l"><b>Lump of Faith rounds</b><span>Four or five at most</span></div><div class="seg" id="lumpSeg"><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button></div></div>
     <div class="row"><div class="l"><b>Freedom after scales</b><span>Three minutes of freedom at the end</span></div><button class="sw" id="freedomSw" role="switch" aria-checked="false" aria-label="Freedom after scales"></button></div>
     <div class="row"><div class="l"><b>Draw from</b><span id="deckSub"></span></div><div class="seg" id="deckSeg"><button data-v="both">Both</button><button data-v="sensations">Sensations</button><button data-v="places">Places</button></div></div>
-    <div class="row"><div class="l"><b>Rest between scales</b><span>Rest, then the next theme</span></div><div class="seg" id="restSeg"><button data-v="0">Off</button><button data-v="30">30s</button><button data-v="60">1m</button><button data-v="120">2m</button></div></div>
+    <div class="row"><div class="l"><b>Rest between scales</b><span>Optional pause before the next chime</span></div><div class="seg" id="restSeg"><button data-v="0">Off</button><button data-v="30">30s</button><button data-v="60">1m</button><button data-v="120">2m</button></div></div>
     <div class="row"><div class="l"><b>Scales session</b><span id="tgtSub"></span></div><div class="seg" id="tgtSeg"><button data-v="600">10</button><button data-v="900">15</button><button data-v="1200">20</button><button data-v="0">Open</button></div></div>
     <div class="row"><div class="l"><b>Vibrate on chime</b><span>Where supported</span></div><button class="sw" id="hapticSw" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
   </div>
@@ -555,7 +595,8 @@ const ICON = { pause:'<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>', play:'<path d="M7
   sound:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15 9.5a3.5 3.5 0 0 1 0 5"/><path d="M17.5 7a7 7 0 0 1 0 10"/>', muted:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>' };
 
 /* ---------- settings ---------- */
-const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"", guide:"silent", advance:"tap", target:900, demidovLight:false, suppTarget:2, lumpRounds:4, freedomAfter:false, deck:"both", rest:60 }, store.get("dm.settings", {}));
+const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"", guide:"silent", advance:"tap", target:900, demidovLight:false, suppTarget:2, lumpRounds:4, freedomAfter:false, deck:"both", rest:0 }, store.get("dm.settings", {}));
+if(!settings.v5){ settings.v5 = true; settings.rest = 0; }
 if(!settings.v3){ settings.v3 = true; settings.pace = 1; settings.volChime = Math.min(settings.volChime, 0.5); }
 if(!settings.v4){ settings.v4 = true; }
 settings.guide = "silent"; settings.advance = "tap";   /* the practice as taught: chime, perception, silence, tap */
@@ -830,13 +871,13 @@ $("mPrev").addEventListener("click", () => { mView = new Date(mView.getFullYear(
 $("mNext").addEventListener("click", () => { mView = new Date(mView.getFullYear(), mView.getMonth() + 1, 1); renderProgress(); });
 
 /* ---------- navigation ---------- */
-function show(id){ document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); $("tabs").classList.toggle("hide", id === "session" || id === "end"); if(id === "home" || id === "progress") setTab(id); }
+function show(id){ document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); $("tabs").classList.toggle("hide", id === "session" || id === "end"); if(id === "home" || id === "progress" || id === "guide") setTab(id); }
 function setTab(t){ $("tabs").querySelectorAll(".tab").forEach(b => b.setAttribute("aria-pressed", b.dataset.tab === t ? "true" : "false")); }
 function openSheet(id){ document.querySelectorAll(".sheet").forEach(s => s.classList.remove("on")); $("scrim").classList.add("on"); $(id).classList.add("on"); }
-function closeSheets(){ $("scrim").classList.remove("on"); document.querySelectorAll(".sheet").forEach(s => s.classList.remove("on")); renderHome(); setTab($("progress").classList.contains("on") ? "progress" : "home"); }
+function closeSheets(){ $("scrim").classList.remove("on"); document.querySelectorAll(".sheet").forEach(s => s.classList.remove("on")); renderHome(); setTab($("progress").classList.contains("on") ? "progress" : $("guide").classList.contains("on") ? "guide" : "home"); }
 $("tabs").addEventListener("click", e => {
   const b = e.target.closest(".tab"); if(!b) return; const t = b.dataset.tab; vibrate(8);
-  if(t === "home"){ closeSheets(); show("home"); } else if(t === "progress"){ closeSheets(); renderProgress(); show("progress"); }
+  if(t === "home"){ closeSheets(); show("home"); } else if(t === "progress"){ closeSheets(); renderProgress(); show("progress"); } else if(t === "guide"){ closeSheets(); show("guide"); }
   else if(t === "voice"){ unlockAudio(); renderVoice(); openSheet("voiceSheet"); setTab("voice"); } else { unlockAudio(); openSheet("settings"); setTab("settings"); }
 });
 $("settingsBtn").addEventListener("click", () => { unlockAudio(); openSheet("settings"); setTab("settings"); });
