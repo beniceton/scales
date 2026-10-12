@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="build" content="__VERSION__">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" id="metaTheme" content="#F3F4F8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Demidov">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Demidov Scales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================= tokens ================= */
+:root{
+  --bg:#F3F4F8; --card:#FFFFFF; --card2:#F6F7FA; --line:#EAECF1; --line2:#DADEE7;
+  --ink:#111318; --ink2:#687084; --ink3:#A3A9B6;
+  --acc:#6C8CFF; --acc2:#93A8FF; --tint:#E3E8FF; --lav:#E8ECFA; --lav2:#DEE4F8; --mint:#45C4A1;
+  --btn:#111318; --btn-ink:#FFFFFF;
+  --shadow:0 .6rem 1.8rem rgba(20,30,60,.08); --shadow2:0 .15rem .6rem rgba(20,30,60,.06);
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+  --gut:clamp(16px,5vw,22px);
+  --tabs:4rem;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#0E1015; --card:#171A21; --card2:#1E222B; --line:#232833; --line2:#2E3440;
+  --ink:#F2F3F7; --ink2:#9AA1AE; --ink3:#5E6573;
+  --acc:#8AA4FF; --acc2:#7E96F5; --tint:#283256; --lav:#1E253F; --lav2:#252D4C; --mint:#45C4A1;
+  --btn:#F2F3F7; --btn-ink:#0E1015;
+  --shadow:0 .6rem 1.8rem rgba(0,0,0,.4); --shadow2:0 .15rem .6rem rgba(0,0,0,.3);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]):not([data-theme="dark"]){
+  --bg:#0E1015; --card:#171A21; --card2:#1E222B; --line:#232833; --line2:#2E3440;
+  --ink:#F2F3F7; --ink2:#9AA1AE; --ink3:#5E6573;
+  --acc:#8AA4FF; --acc2:#7E96F5; --tint:#283256; --lav:#1E253F; --lav2:#252D4C; --mint:#45C4A1;
+  --btn:#F2F3F7; --btn-ink:#0E1015;
+  --shadow:0 .6rem 1.8rem rgba(0,0,0,.4); --shadow2:0 .15rem .6rem rgba(0,0,0,.3);
+  color-scheme:dark;
+}}
+
+:root[data-theme="demidov"]{
+  --bg:#000000; --card:#121212; --card2:#1A1A1A; --line:#262626; --line2:#363636;
+  --ink:#FFFFFF; --ink2:#B5B5B5; --ink3:#6F6F6F;
+  --acc:#D33021; --acc2:#E24A3C; --tint:#2A0F0C; --lav:#141414; --lav2:#1C1C1C; --mint:#D33021;
+  --btn:#D33021; --btn-ink:#FFFFFF;
+  --shadow:0 .6rem 1.8rem rgba(0,0,0,.6); --shadow2:0 .15rem .6rem rgba(0,0,0,.5);
+  --head:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="demidov"] body{font-family:var(--head)}
+:root[data-theme="demidov"] .greet h1,:root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .endwrap h2,:root[data-theme="demidov"] .sheet h3,:root[data-theme="demidov"] .top .title,:root[data-theme="demidov"] .sec b{font-family:var(--head);font-weight:400;text-transform:uppercase;letter-spacing:.08em}
+:root[data-theme="demidov"] .greet h1{font-size:1.45rem;line-height:1.3}
+:root[data-theme="demidov"] .greet h1::first-letter{color:var(--acc)}
+:root[data-theme="demidov"] .greet .k{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--acc)}
+:root[data-theme="demidov"] .hero{background:#0A0A0A;border:1px solid #2A2A2A}
+:root[data-theme="demidov"] .hero h2{font-size:1.15rem}
+:root[data-theme="demidov"] .art .a{border-color:var(--acc);opacity:.8}
+:root[data-theme="demidov"] .art .b{border-color:#fff;opacity:.5}
+:root[data-theme="demidov"] .start{background:var(--acc);box-shadow:0 .5rem 1.2rem rgba(211,48,33,.4);text-transform:uppercase;letter-spacing:.1em;font-size:.85rem}
+:root[data-theme="demidov"] .start i svg{fill:var(--acc)}
+:root[data-theme="demidov"] .modes button[aria-pressed="true"]{background:#1A1A1A;color:#fff}
+:root[data-theme="demidov"] .perc{font-family:var(--head);font-weight:300;text-transform:uppercase;letter-spacing:.06em;font-size:1.3rem;line-height:1.35}
+:root[data-theme="demidov"] .prompt{font-family:var(--head)}
+:root[data-theme="demidov"] .ring{background:transparent;border:1px dotted var(--acc);opacity:.6}
+:root[data-theme="demidov"] .ring.r2{border:1px solid #fff;opacity:.35}
+:root[data-theme="demidov"] .ring.r3{border:1px dotted var(--acc);opacity:.8}
+:root[data-theme="demidov"] .core{background:#000;border:2px solid var(--acc);box-shadow:0 0 2.5rem rgba(211,48,33,.35)}
+:root[data-theme="demidov"] .wave path{stroke:var(--acc)}
+:root[data-theme="demidov"] .wave{opacity:.7}
+:root[data-theme="demidov"] .round{background:#fff;color:#000}
+:root[data-theme="demidov"] .side{background:#121212;border:1px solid #2A2A2A}
+:root[data-theme="demidov"] .bars i.f{background:#fff}
+:root[data-theme="demidov"] .bars i.h{background:var(--acc)}
+:root[data-theme="demidov"] .day.done .c{background:var(--acc)}
+:root[data-theme="demidov"] .day.done .c svg{stroke:#fff}
+:root[data-theme="demidov"] .day.today .c{border-color:#fff}
+:root[data-theme="demidov"] .stats b{font-family:var(--head);font-weight:600}
+:root[data-theme="demidov"] .tabs{background:#0A0A0A;border-top:1px solid #222}
+:root[data-theme="demidov"] .tab[aria-pressed="true"]{color:#fff}
+:root[data-theme="demidov"] .tab[aria-pressed="true"]::after{background:var(--acc)}
+:root[data-theme="demidov"] .wash{background:radial-gradient(60% 40% at 50% 26%,#1E0806 0%,transparent 70%)}
+:root[data-theme="demidov"] .go{background:var(--acc);color:#fff;text-transform:uppercase;letter-spacing:.1em;font-size:.9rem}
+:root[data-theme="demidov"] .list li em{background:var(--acc)}
+:root[data-theme="demidov"] .seg button[aria-pressed="true"],:root[data-theme="demidov"] .chips button[aria-pressed="true"],:root[data-theme="demidov"] .pill.primary{background:#fff;color:#000}
+:root[data-theme="demidov"] .sw[aria-checked="true"]{background:var(--acc)}
+:root[data-theme="demidov"] .link{color:var(--acc)}
+:root[data-theme="demidov"] .foot{text-transform:uppercase;letter-spacing:.08em;font-size:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root[data-theme="demidov"] .foot::after{content:" · Demidov Studio";color:var(--acc)}
+
+:root[data-theme="demidov"][data-variant="light"]{
+  --bg:#FFFFFF; --card:#F6F6F6; --card2:#EFEFEF; --line:#E4E4E4; --line2:#D2D2D2;
+  --ink:#000000; --ink2:#5F5F5F; --ink3:#9A9A9A;
+  --acc:#D33021; --acc2:#E24A3C; --tint:#FBE3E0; --lav:#F6F6F6; --lav2:#EDEDED; --mint:#D33021;
+  --btn:#D33021; --btn-ink:#FFFFFF;
+  --shadow:0 .6rem 1.8rem rgba(0,0,0,.08); --shadow2:0 .15rem .6rem rgba(0,0,0,.06);
+  color-scheme:light;
+}
+:root[data-theme="demidov"][data-variant="light"] .hero{background:#F6F6F6;border:1px solid #E4E4E4}
+:root[data-theme="demidov"][data-variant="light"] .modes button[aria-pressed="true"]{background:#fff;color:#000;box-shadow:var(--shadow2)}
+:root[data-theme="demidov"][data-variant="light"] .mark,:root[data-theme="demidov"][data-variant="light"] .artmark,:root[data-theme="demidov"][data-variant="light"] .brandmark{color:#000}
+:root[data-theme="demidov"][data-variant="light"] .brand,:root[data-theme="demidov"][data-variant="light"] .brand small{color:#000}
+:root[data-theme="demidov"][data-variant="light"] .art .b{border-color:#000}
+:root[data-theme="demidov"][data-variant="light"] .ring.r2{border-color:#000}
+:root[data-theme="demidov"][data-variant="light"] .round{background:#000;color:#fff}
+:root[data-theme="demidov"][data-variant="light"] .side{background:#fff;border:1px solid #E4E4E4}
+:root[data-theme="demidov"][data-variant="light"] .bars i.f{background:#000}
+:root[data-theme="demidov"][data-variant="light"] .day.today .c{border-color:#000}
+:root[data-theme="demidov"][data-variant="light"] .tabs{background:#fff;border-top:1px solid #E4E4E4}
+:root[data-theme="demidov"][data-variant="light"] .tab[aria-pressed="true"]{color:#000}
+:root[data-theme="demidov"][data-variant="light"] .wash{background:radial-gradient(60% 40% at 50% 26%,#FBE3E0 0%,transparent 70%)}
+:root[data-theme="demidov"][data-variant="light"] .seg button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .chips button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .pill.primary{background:#000;color:#fff}
+:root[data-theme="demidov"][data-variant="light"] .core span{color:#000}
+:root[data-theme="demidov"][data-variant="light"] textarea{background:#fff}
+.recbar{display:flex;align-items:center;gap:.75rem;margin:.25rem 0 .6rem}
+.recprog{flex:1;height:.4rem;border-radius:.2rem;background:var(--line2);overflow:hidden}
+.recprog i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.recbar span{font-size:.8rem;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.reclist{list-style:none;margin:.6rem 0 0;padding:0;max-height:48dvh;overflow:auto;border-radius:1.2rem;background:var(--card);box-shadow:var(--shadow2)}
+.reclist li{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border-top:1px solid var(--line);font-size:.88rem;line-height:1.3}
+.reclist li:first-child{border-top:0}
+.reclist li .tx{flex:1;min-width:0}
+.reclist li .tx small{display:block;color:var(--ink3);font-size:.72rem}
+.reclist li.done .tx::before{content:"";display:inline-block;width:.5rem;height:.5rem;border-radius:50%;background:var(--mint);margin-right:.45rem;vertical-align:middle}
+.rb{width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;background:var(--card2);color:var(--ink);flex:none}
+.rb svg{width:1.05rem;height:1.05rem}
+.rb.rec{background:var(--acc);color:#fff}
+.rb.live{background:#D33021;color:#fff;animation:blink 1s ease-in-out infinite}
+@keyframes blink{50%{opacity:.55}}
+.ptr{position:fixed;left:0;right:0;top:var(--sat);z-index:15;display:flex;justify-content:center;pointer-events:none;transform:translateY(-3rem);transition:transform .2s}
+.ptr span{background:var(--card);color:var(--ink2);box-shadow:var(--shadow2);border-radius:999px;padding:.45rem .9rem;font-size:.78rem;font-weight:600}
+.ptr.arm span{color:var(--acc)}
+.mark,.artmark,.brand{display:none}
+:root[data-theme="demidov"] .mark{display:block;position:absolute;inset:-4%;width:108%;height:108%;color:#fff;will-change:transform}
+:root[data-theme="demidov"] .ring{display:none}
+:root[data-theme="demidov"] .core{background:transparent;border:0;box-shadow:none}
+:root[data-theme="demidov"] .wave{display:none}
+:root[data-theme="demidov"] .core span{font-family:var(--head);font-weight:300;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
+:root[data-theme="demidov"] .art .a,:root[data-theme="demidov"] .art .b{display:none}
+:root[data-theme="demidov"] .art{right:.5rem;top:.5rem;width:4.6rem;height:4.6rem;opacity:1}
+:root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .hero .m{max-width:calc(100% - 5.2rem)}
+:root[data-theme="demidov"] .artmark{display:block;width:100%;height:100%;color:#fff;animation:spin 90s linear infinite}
+:root[data-theme="demidov"] .brand{display:flex;align-items:center;gap:.45rem;line-height:1;font-family:var(--head);color:#fff;font-weight:400;font-size:.95rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+:root[data-theme="demidov"] .brand i{font-style:normal;color:var(--acc)}
+:root[data-theme="demidov"] .brand small{font-size:.6rem;letter-spacing:.1em;text-transform:lowercase;color:#fff;margin-left:.1rem}
+:root[data-theme="demidov"] .brandmark{width:1.7rem;height:1.7rem;color:#fff;flex:none}
+@media (max-width:380px){:root[data-theme="demidov"] .brand small{display:none}}
+:root[data-theme="demidov"] .perc{font-weight:300}
+
+/* ================= base: everything scales from the root size ================= */
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:clamp(14px,2.1vw + 8px,18px);height:100%;-webkit-text-size-adjust:100%}
+@media (max-height:700px){html{font-size:clamp(13px,2vw + 7px,16px)}}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;transition:background .4s,color .4s}
+button{font:inherit;color:inherit;cursor:pointer;padding:0;border:0;background:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+svg{display:block}
+.i{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ================= screens ================= */
+.app{max-width:30rem;margin:0 auto;position:relative}
+.screen{display:none;flex-direction:column;gap:var(--gap,.75rem);padding:calc(var(--sat) + .5rem) var(--gut) 1rem;min-height:100vh;min-height:100dvh}
+.screen.on{display:flex;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.screen.tabbed{padding-bottom:calc(var(--tabs) + var(--sab) + .9rem)}
+@keyframes rise{from{opacity:0;transform:translateY(.5rem)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:1.4rem;box-shadow:var(--shadow)}
+.top{display:flex;justify-content:space-between;align-items:center;height:2.75rem;flex:none}
+.top .title{font-weight:600;font-size:1.05rem}
+.ico{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--card);box-shadow:var(--shadow2);display:grid;place-items:center;color:var(--ink);flex:none}
+.ico svg{width:1.2rem;height:1.2rem}
+
+/* ================= home ================= */
+.greet{flex:none}
+.greet .k{color:var(--ink2);font-size:.85rem;line-height:1.3}
+.greet h1{font-weight:600;font-size:1.4rem;line-height:1.2;margin:.1rem 0 0;letter-spacing:-.01em}
+.modes{display:flex;gap:.25rem;flex:none}
+.modes button{color:var(--ink2);border-radius:.9rem;height:2.25rem;padding:0 1rem;font-weight:500;font-size:.95rem;transition:background .2s,color .2s}
+.modes button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow2);font-weight:600}
+.hero{flex:none;border-radius:1.3rem;padding:.95rem 1.1rem;background:linear-gradient(135deg,var(--lav),var(--lav2));position:relative;overflow:hidden}
+.hero h2{font-weight:600;font-size:1.15rem;line-height:1.25;margin:0;max-width:calc(100% - 5.5rem);position:relative;z-index:1}
+.hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1;max-width:calc(100% - 5.5rem)}
+.start{margin-top:.7rem;border-radius:999px;background:var(--acc);color:#fff;height:2.5rem;padding:0 1.25rem 0 .85rem;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.6rem;box-shadow:0 .5rem 1.2rem rgba(108,140,255,.32);position:relative;z-index:1}
+.start i{width:1.4rem;height:1.4rem;border-radius:50%;background:#fff;display:grid;place-items:center}
+.start i svg{width:.55rem;height:.55rem;fill:var(--acc)}
+.art{position:absolute;right:-2.4rem;top:-2.4rem;width:9.5rem;height:9.5rem;pointer-events:none;opacity:.7}
+.art i{position:absolute;border-radius:50%;display:block}
+.art .a{inset:0;border:1.5px dashed var(--acc2);opacity:.6;animation:spin 50s linear infinite}
+.art .b{inset:22%;border:1.5px solid var(--acc2);opacity:.35}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sec{display:flex;justify-content:space-between;align-items:baseline;flex:none;margin-bottom:-.35rem}
+.supp{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;flex:none}
+.supp button{position:relative;background:var(--card);border-radius:1.2rem;box-shadow:var(--shadow);padding:.7rem .8rem;text-align:left;min-width:0;display:grid;grid-template-columns:1.9rem 1fr;grid-template-rows:auto auto;column-gap:.6rem;row-gap:.1rem;align-items:center;overflow:hidden}
+.supp .ic{width:1.9rem;height:1.9rem;border-radius:.65rem;background:var(--tint);color:var(--acc);display:grid;place-items:center;grid-row:1/3}
+.supp .ic svg{width:1.05rem;height:1.05rem}
+.supp b{font-weight:600;font-size:.9rem;line-height:1.15;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.supp small{color:var(--ink2);font-size:.7rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.supp .w{display:flex;gap:.25rem;align-items:center;grid-column:2;margin-top:.15rem}
+.supp .w i{width:.45rem;height:.45rem;border-radius:50%;background:var(--line2);display:block}
+.supp .w i.d{background:var(--mint)}
+.supp em{font-style:normal;color:var(--ink3);font-size:.66rem;margin-left:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root[data-theme="demidov"] .supp .ic{background:#1A1A1A;color:var(--acc)}
+:root[data-theme="demidov"] .supp b{font-family:var(--head);text-transform:uppercase;letter-spacing:.05em;font-weight:500;font-size:.78rem}
+:root[data-theme="demidov"][data-variant="light"] .supp .ic{background:#F0F0F0}
+.sec b{font-weight:600;font-size:.98rem}
+.sec span{color:var(--ink2);font-size:.82rem}
+.week{flex:none;padding:.85rem .9rem .8rem}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem}
+.day{display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.day .c{width:2.15rem;height:2.15rem;border-radius:50%;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line)}
+.day .c svg{width:1rem;height:1rem;stroke:#fff;stroke-width:2.6;opacity:0;transform:scale(.6);transition:opacity .3s,transform .3s}
+.day.done .c{background:var(--mint);border-color:transparent}
+.day.done .c svg{opacity:1;transform:none}
+.day.half .c{border:2px solid var(--mint)}
+.day.today .c{border:1.5px dashed var(--acc)}
+.day.today.done .c{border-color:transparent}
+.day.future .c{opacity:.5}
+.day small{font-size:.72rem;color:var(--ink3);font-weight:600}
+.day.today small{color:var(--ink)}
+.stats{display:flex;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--line)}
+.stats div{flex:1;text-align:center}
+.stats div+div{border-left:1px solid var(--line)}
+.stats b{display:block;font-weight:600;font-size:1.25rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{color:var(--ink2);font-size:.74rem}
+.foot{text-align:center;color:var(--ink3);font-size:.74rem;margin-top:auto;flex:none}
+
+/* ================= tab bar ================= */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;max-width:30rem;margin:0 auto;background:var(--card);border-radius:1.3rem 1.3rem 0 0;box-shadow:0 -.5rem 1.8rem rgba(20,30,60,.08);height:calc(var(--tabs) + var(--sab));padding:0 1rem var(--sab);display:flex;justify-content:space-around;align-items:center;transition:transform .35s}
+.tabs.hide{transform:translateY(110%)}
+.tab{color:var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;width:3.9rem;height:3.4rem;font-size:.66rem;font-weight:600;position:relative}
+.tab svg{width:1.35rem;height:1.35rem}
+.tab[aria-pressed="true"]{color:var(--ink)}
+.tab[aria-pressed="true"]::after{content:"";position:absolute;bottom:.15rem;width:.25rem;height:.25rem;border-radius:50%;background:var(--ink)}
+
+/* ================= progress ================= */
+.month{flex:none;padding:1rem}
+.month .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.month .hd b{font-weight:600}
+.month .hd button{background:var(--card2);width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center}
+.month .hd button svg{width:1rem;height:1rem}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem;text-align:center}
+.mgrid .wd{font-size:.68rem;color:var(--ink3);font-weight:600;padding-bottom:.15rem}
+.mgrid .md{width:2.25rem;height:2.25rem;margin:0 auto;border-radius:50%;display:grid;place-items:center;font-size:.85rem;color:var(--ink2);font-variant-numeric:tabular-nums}
+.mgrid .md.done{background:var(--mint);color:#fff;font-weight:600}
+.mgrid .md.half{box-shadow:inset 0 0 0 2px var(--mint)}
+.mgrid .md.today{box-shadow:inset 0 0 0 1.5px var(--acc);color:var(--ink);font-weight:600}
+.mgrid .md.done.today{box-shadow:none}
+.mgrid .md.blank{visibility:hidden}
+.mgrid .md.supp{position:relative}
+.mgrid .md.supp::after{content:"";position:absolute;bottom:.15rem;left:50%;transform:translateX(-50%);width:.3rem;height:.3rem;border-radius:50%;background:var(--acc)}
+.hist{flex:1;min-height:6rem;padding:.25rem 1rem;overflow:auto}
+.hist ul{margin:0;padding:0;list-style:none}
+.hist li{display:flex;justify-content:space-between;gap:.75rem;padding:.75rem 0;border-top:1px solid var(--line);font-size:.92rem}
+.hist li:first-child{border-top:0}
+.hist li span{color:var(--ink2);font-size:.8rem;text-align:right;max-width:58%}
+
+/* ================= guide ================= */
+#guide{gap:.75rem}
+.gtext{padding:1rem 1.1rem}
+.gtext h4{margin:.2rem 0 .35rem;font-weight:600;font-size:1rem}
+.gtext h4+h4{margin-top:.6rem}
+.gtext p{margin:0 0 .6rem;font-size:.9rem;line-height:1.5;color:var(--ink)}
+.gtext p.src{color:var(--ink2);font-size:.8rem}
+.gtext p.how{color:var(--ink2);font-size:.84rem;border-top:1px solid var(--line);padding-top:.6rem;margin-top:.2rem}
+:root[data-theme="demidov"] .gtext h4{font-family:var(--head);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:.85rem}
+
+/* ================= session ================= */
+#session{--gap:0}
+.wash{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s;background:radial-gradient(60% 40% at 50% 26%,var(--tint) 0%,transparent 70%)}
+body.live .wash{opacity:.5}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;position:relative;z-index:1}
+.orb{position:relative;width:min(58vw,30dvh,17rem);aspect-ratio:1;display:grid;place-items:center;flex:none}
+.ring{position:absolute;inset:0;border-radius:50%;transform:scale(.7);will-change:transform;background:var(--tint);opacity:.35}
+.ring.r2{inset:9%;opacity:.45}.ring.r3{inset:18%;opacity:.55}
+.core{position:absolute;inset:18%;border-radius:50%;display:grid;place-items:center;text-align:center;will-change:transform;overflow:hidden;background:radial-gradient(circle at 50% 50%,var(--acc2) 0%,var(--acc) 100%);box-shadow:0 1.4rem 3rem rgba(108,140,255,.28)}
+.core span{position:relative;z-index:2;color:#fff;font-weight:600;font-size:1.05rem;opacity:0;transition:opacity .5s}
+.core span.on{opacity:1}
+.wave{position:absolute;left:-10%;right:-10%;top:50%;height:36%;transform:translateY(-50%);opacity:.4;z-index:1}
+.wave path{fill:none;stroke:#fff;stroke-width:.7;stroke-linecap:round}
+.core.bloom{animation:bloom 1s ease-out}
+@keyframes bloom{0%{filter:brightness(1)}25%{filter:brightness(1.18)}100%{filter:brightness(1)}}
+.pulse{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.perc{font-weight:600;font-size:1.45rem;line-height:1.25;text-align:center;margin-top:1.2rem;max-width:18rem;height:3.7rem;display:flex;align-items:center;justify-content:center;letter-spacing:-.01em;opacity:0;transform:translateY(.5rem);filter:blur(5px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1),filter .9s ease}
+.perc.on{opacity:1;transform:none;filter:blur(0)}
+.prompt{color:var(--ink2);text-align:center;max-width:18rem;margin-top:.4rem;font-size:.88rem;line-height:1.4;height:3.8rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s}
+.prompt.on{opacity:1}
+.vlbl{color:var(--ink3);font-size:.74rem;margin-top:.2rem}
+.dots{display:flex;gap:.4rem;justify-content:center;margin-top:.6rem;height:.4rem}
+.dots i{width:.4rem;height:.4rem;border-radius:50%;background:var(--line2);display:block;transition:background .4s,width .4s}
+.dots i.d{background:var(--ink)}
+.dots i.c{background:var(--acc);width:1.1rem;border-radius:.2rem}
+.wavebar{display:flex;align-items:center;gap:.6rem;margin-top:.75rem;flex:none;position:relative;z-index:1}
+.wavebar .t{font-size:.8rem;color:var(--ink2);font-variant-numeric:tabular-nums;width:2.5rem}
+.wavebar .t.r{text-align:right}
+.bars{flex:1;display:flex;align-items:center;gap:3px;height:2.2rem}
+.bars i{flex:1;border-radius:2px;background:var(--line2);height:var(--h,40%);display:block;transition:background .2s}
+.bars i.f{background:var(--ink)}
+.bars i.h{background:var(--acc);animation:bob .6s ease-in-out infinite alternate}
+@keyframes bob{from{height:35%}to{height:95%}}
+.ctl{display:flex;justify-content:center;align-items:center;gap:2.2rem;margin-top:1rem;flex:none;position:relative;z-index:1}
+.round{width:4.25rem;height:4.25rem;border-radius:50%;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .15s}
+.round:active{transform:scale(.94)}
+.round svg{width:1.6rem;height:1.6rem;fill:currentColor}
+.side{color:var(--ink);width:3.5rem;height:3.5rem;border-radius:50%;background:var(--card);box-shadow:var(--shadow2);display:grid;place-items:center;position:relative}
+.side svg{width:1.5rem;height:1.5rem}
+.side span{position:absolute;bottom:-1.1rem;left:50%;transform:translateX(-50%);font-size:.66rem;color:var(--ink2);font-weight:600;white-space:nowrap}
+.clock{text-align:center;color:var(--ink3);font-variant-numeric:tabular-nums;font-size:.74rem;margin-top:1.5rem;flex:none}
+
+/* ================= end ================= */
+#end{--gap:0}
+.endwrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+.endwrap h2{font-weight:600;font-size:1.7rem;line-height:1.2;margin:0;letter-spacing:-.01em}
+.endwrap p{color:var(--ink2);margin:.3rem 0 1rem;font-size:.95rem}
+.list{list-style:none;padding:.25rem 1.1rem;margin:0 0 1rem;font-size:1rem;max-height:38dvh;overflow:auto}
+.list li{padding:.7rem 0;border-top:1px solid var(--line);display:flex;gap:.85rem;align-items:center}
+.list li:first-child{border-top:0}
+.list li em{font-style:normal;font-size:.72rem;color:#fff;background:var(--acc);border-radius:50%;width:1.4rem;height:1.4rem;display:grid;place-items:center;font-weight:700;flex:none}
+textarea{width:100%;min-height:5.5rem;border:1px solid var(--line);border-radius:1.2rem;background:var(--card);color:var(--ink);padding:.85rem 1rem;font:inherit;font-size:.95rem;resize:none}
+textarea::placeholder{color:var(--ink3)}
+.go{width:100%;border-radius:999px;background:var(--btn);color:var(--btn-ink);height:3.3rem;font-weight:600;font-size:1rem;display:flex;justify-content:center;align-items:center;margin-top:.85rem}
+
+/* ================= sheets ================= */
+.scrim{position:fixed;inset:0;background:rgba(10,12,20,.4);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-width:32rem;margin:0 auto;background:var(--bg);color:var(--ink);border-radius:1.6rem 1.6rem 0 0;padding:.6rem var(--gut) calc(1.2rem + var(--sab));max-height:88dvh;overflow:auto;transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.8,.2,1);box-shadow:0 -.6rem 3rem rgba(0,0,0,.2)}
+.sheet.on{transform:none}
+.grab{width:2.5rem;height:.3rem;border-radius:.2rem;background:var(--line2);margin:0 auto .75rem}
+.sheet h3{font-weight:600;font-size:1.25rem;margin:0 0 .1rem}
+.sheet .help{color:var(--ink2);font-size:.88rem;margin:0 0 .6rem}
+.group{background:var(--card);border-radius:1.2rem;padding:.1rem 1rem;box-shadow:var(--shadow2);margin-top:.75rem}
+.row{display:flex;justify-content:space-between;align-items:center;gap:.85rem;min-height:3.5rem;padding:.6rem 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .l b{display:block;font-weight:600;font-size:.95rem}
+.row .l span{color:var(--ink2);font-size:.8rem}
+.row.col{flex-direction:column;align-items:stretch;gap:.1rem}
+.row.col .l{display:flex;justify-content:space-between;align-items:baseline}
+.row.col .l em{font-style:normal;color:var(--ink2);font-size:.8rem;font-variant-numeric:tabular-nums}
+.seg{display:flex;background:var(--card2);border-radius:999px;padding:.2rem}
+.seg button{border-radius:999px;height:2rem;padding:0 .7rem;font-size:.8rem;font-weight:600;color:var(--ink2);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.seg.wide{width:100%;margin-top:.35rem}
+.seg.wide button{flex:1;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end}
+.chips button{background:var(--card2);border-radius:999px;height:2.1rem;padding:0 .9rem;font-size:.82rem;font-weight:600;color:var(--ink2)}
+.chips button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.sw{width:3.25rem;height:1.95rem;border-radius:999px;background:var(--line2);position:relative;transition:background .25s;flex:none}
+.sw::after{content:"";position:absolute;top:.19rem;left:.19rem;width:1.57rem;height:1.57rem;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .25s}
+.sw[aria-checked="true"]{background:var(--mint)}
+.sw[aria-checked="true"]::after{transform:translateX(1.3rem)}
+.link{color:var(--acc);font-weight:600;padding:.5rem 0}
+.pill{background:var(--card);box-shadow:var(--shadow2);border-radius:999px;height:2.5rem;padding:0 1rem;font-size:.88rem;font-weight:600}
+.pill.primary{background:var(--btn);color:var(--btn-ink)}
+.sheet textarea.big{min-height:44dvh;font-size:.88rem;line-height:1.6;resize:vertical}
+.bar2{display:flex;gap:.6rem;justify-content:flex-end;margin-top:.85rem;flex-wrap:wrap}
+.drop{display:block;border:1px dashed var(--line2);border-radius:1.1rem;padding:1rem;text-align:center;color:var(--ink2);font-size:.88rem;margin-top:.5rem;background:var(--card)}
+.drop input{display:none}
+.note{color:var(--ink2);font-size:.82rem;margin:.6rem 0 0}
+.slider{display:flex;align-items:center;gap:.75rem;width:100%}
+.slider svg{width:1.1rem;height:1.1rem;stroke:var(--ink3);flex:none}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:1.75rem;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:.4rem;border-radius:.2rem;background:linear-gradient(90deg,var(--ink) var(--p,50%),var(--line2) var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:1.5rem;height:1.5rem;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.25);margin-top:-.55rem}
+input[type=range]::-moz-range-track{height:.4rem;border-radius:.2rem;background:var(--line2)}
+input[type=range]::-moz-range-progress{height:.4rem;border-radius:.2rem;background:var(--ink)}
+input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%;background:#fff;border:0;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.toast{position:fixed;left:50%;bottom:calc(var(--tabs) + 1.5rem + var(--sab));transform:translate(-50%,1rem);background:var(--btn);color:var(--btn-ink);padding:.7rem 1.1rem;border-radius:999px;font-size:.88rem;font-weight:600;opacity:0;transition:.3s;z-index:30;pointer-events:none;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.art .a,.bars i.h{animation:none}}
+</style>
+</head>
+<body>
+<div class="wash"></div>
+<div class="ptr" id="ptr"><span id="ptrT">Pull to refresh</span></div>
+<div class="app">
+
+<!-- ================= HOME ================= -->
+<section class="screen tabbed on" id="home">
+  <div class="top">
+    <button class="ico" id="themeBtn" aria-label="Light or dark"><svg class="i" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg></button>
+    <span class="brand" aria-hidden="true"><svg class="brandmark" viewBox="0 0 100 100"><use href="#markdef"/></svg><span>DEMID<i>O</i>V</span><small>studio lond<i>o</i>n</small></span>
+    <button class="ico" id="settingsBtn" aria-label="Settings"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg></button>
+  </div>
+  <div class="greet">
+    <div class="k" id="greetK"></div>
+    <h1>Ready for today's practice?</h1>
+  </div>
+  <div class="modes" id="modes">
+    <button data-m="full" aria-pressed="true">Full</button>
+    <button data-m="breath" aria-pressed="false">Breathing</button>
+    <button data-m="scales" aria-pressed="false">Scales</button>
+  </div>
+  <div class="hero">
+    <h2 id="heroT"></h2>
+    <div class="m" id="heroM"></div>
+    <button class="start" id="startBtn"><i><svg viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z"/></svg></i>Start</button>
+    <div class="art"><i class="a"></i><i class="b"></i><svg class="artmark" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="49.06" cy="49.66" r="30.00" stroke="currentColor" stroke-width="1.0"/><circle cx="48.99" cy="48.39" r="29.10" stroke="currentColor" stroke-width="1.0"/><circle cx="50.29" cy="47.22" r="28.20" stroke="#D33021" stroke-width="1.25"/><circle cx="52.57" cy="47.34" r="27.30" stroke="currentColor" stroke-width="1.0"/><circle cx="54.56" cy="49.36" r="26.40" stroke="currentColor" stroke-width="1.0"/><circle cx="54.76" cy="52.75" r="25.50" stroke="#D33021" stroke-width="1.25"/><circle cx="52.40" cy="55.93" r="24.60" stroke="currentColor" stroke-width="1.0"/><circle cx="47.99" cy="57.02" r="23.70" stroke="currentColor" stroke-width="1.0"/></g></svg></div>
+  </div>
+  <div class="sec"><b>Supplementary</b><span>Once or twice a week</span></div>
+  <div class="supp" id="supp"></div>
+  <div class="sec"><b>This week</b><span id="weekSub"></span></div>
+  <div class="card week">
+    <div class="days" id="days"></div>
+    <div class="stats"><div><b id="stStreak">0</b><span>day streak</span></div><div><b id="stWeek">0</b><span>this week</span></div><div><b id="stMonth">0</b><span>this month</span></div></div>
+  </div>
+  <div class="foot" id="foot"></div>
+</section>
+
+<!-- ================= PROGRESS ================= -->
+<section class="screen tabbed" id="progress">
+  <div class="top"><span class="title" style="margin:0 auto">Progress</span></div>
+  <div class="card month">
+    <div class="hd"><button id="mPrev" aria-label="Previous month"><svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><b id="mTitle"></b><button id="mNext" aria-label="Next month"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    <div class="mgrid" id="mgrid"></div>
+  </div>
+  <div class="sec"><b>Recent sessions</b><span id="histSub"></span></div>
+  <div class="card hist"><ul id="hist"></ul></div>
+</section>
+
+<!-- ================= GUIDE ================= -->
+<section class="screen tabbed" id="guide">
+  <div class="top"><span class="title" style="margin:0 auto">Guide</span></div>
+  <div class="card gtext">
+    <h4>Scales</h4>
+    <p class="src">Sensations, times, places and events. From the Demidov Studio London notes.</p>
+    <p>"Make several lists. Each list should contain 50 or more themes. One of the lists may consist of themes connected with physical sensations: cold… hot… warm bathtub, sitting on a wet surface, etc. Another list may consist of themes connected with more complex circumstances, such as events and places: someone just knocked on my window… ship cabin… prison cell… I am expecting a phone call… I am expecting someone's arrival… etc. Do not choose any "extraordinary", psychologically heightened themes."</p>
+    <p>"Take one of the theme lists and, since it is important to receive an unexpected impression, put your finger arbitrarily onto one of the themes. Read the theme you just picked. Let's say you picked "mosquito bites": immediately, without any thinking, yield to spontaneous sensations, movements, thought, to everything that comes to you as a reaction to the words you read."</p>
+    <p>"Don't rush to move to the next theme until you've exhausted the previous theme. Rest for a few minutes, then take another theme. No need to exercise many themes in one session, so as not to get accustomed to approximating the truth."</p>
+    <p class="how">In this app: the chime is the finger landing on the list. The theme is read once, then silence. Stay with it until it has faded, tap, and the next theme comes with the next chime. A rest between themes can be set in Settings.</p>
+  </div>
+  <div class="card gtext">
+    <h4>Lump of Faith</h4>
+    <p>"I sit calmly and make sure I am in a calm place. Then I think of something, I ask myself 'can I do that', and then I immediately follow through and do it. I return to my original place and sense the glow of having succeeded. I rest for a moment, and think of something else. Don't do too many of these. Probably four or five maximum."</p>
+    <h4>Three Minutes of Freedom</h4>
+    <p>"For the next three minutes, I will give myself complete freedom to think what I feel like thinking, feel what I feel like feeling and do what I feel like doing. This could be done at the end of any of these exercises."</p>
+  </div>
+  <div class="card gtext">
+    <h4>ANA Breath Meditation</h4>
+    <p class="src">A Sufi-inspired Demidov practice for sensing the "I Am" and for singularity.</p>
+    <p>Find a quiet space to sit or lie down comfortably. Sense the asana of your position. Allow your body to settle and your breath to soften. Become aware of your natural breathing; no need to control it, just notice.</p>
+    <p>On the inhale, say either internally, or as a whisper or quietly voiced, "Ana" (stress on the second syllable: An-aa). Let it settle more and more in your centre. On the exhale, repeat softly: "Ana". Continue this rhythm. Let the word gently mirror your existence, not as a thought but as a sensation. You are not affirming anything. You are simply being.</p>
+    <p>After a few minutes, shift to: inhale "Ana", exhale "Hu" (The One, divine presence). This rhythm becomes a living echo of "I… am". Then shift to "I" on the inhale, "am" on the exhale. After a while, let the words fade into nothingness, and just stay with observing the breath.</p>
+    <h4>Asana of body position in space</h4>
+    <p>When you feel a sense of stillness, allow the eyes to gently open. Let the space arrive to you, without seeking. Allow the eye to land on a specific point in space. Let that point be admitted through the breath, not stared at but received. Follow the body's natural urge to move toward that point, slowly, intuitively. Don't decide in advance how the body will be when it arrives. Let the body decide. Let it settle. When a clear sense of being singularly in that place is fully present, and only then, say out loud: "I am." Notice what that feels like. Then let the eye land on a new point, and repeat. Not too many times; the point is not repetition, but to truly sense the asana of each shift.</p>
+  </div>
+  <p class="foot" style="margin-top:.5rem">Texts from Demidov Studio London · demidovstudiolondon.com</p>
+</section>
+
+<!-- ================= SESSION ================= -->
+<section class="screen" id="session">
+  <div class="top">
+    <button class="ico" id="endBtn" aria-label="End session"><svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <span class="title" id="phaseK"></span>
+    <span style="width:2.6rem;text-align:right;font-size:.8rem;color:var(--ink2);font-variant-numeric:tabular-nums" id="total"></span>
+  </div>
+  <div class="stage">
+    <div class="orb" id="orbwrap">
+      <div class="ring r1" id="r1"></div><div class="ring r2" id="r2"></div><div class="ring r3" id="r3"></div>
+      <svg class="pulse" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="32" fill="none" stroke="var(--acc)" stroke-width="1" opacity="0"><animate id="p1r" attributeName="r" from="32" to="52" dur="1.5s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.2 0.6 0.3 1"/><animate id="p1o" attributeName="opacity" from="0.8" to="0" dur="1.5s" begin="indefinite" fill="freeze"/></circle>
+        <circle cx="50" cy="50" r="32" fill="none" stroke="var(--acc2)" stroke-width=".8" opacity="0"><animate id="p2r" attributeName="r" from="32" to="52" dur="1.7s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.2 0.6 0.3 1"/><animate id="p2o" attributeName="opacity" from="0.6" to="0" dur="1.7s" begin="indefinite" fill="freeze"/></circle>
+      </svg>
+      <svg class="mark" id="mark" viewBox="0 0 100 100" aria-hidden="true"><g id="markdef" fill="none" stroke-linecap="round"><circle cx="49.06" cy="49.66" r="30.00" stroke="currentColor" stroke-width="1.0"/><circle cx="48.99" cy="48.39" r="29.10" stroke="currentColor" stroke-width="1.0"/><circle cx="50.29" cy="47.22" r="28.20" stroke="#D33021" stroke-width="1.25"/><circle cx="52.57" cy="47.34" r="27.30" stroke="currentColor" stroke-width="1.0"/><circle cx="54.56" cy="49.36" r="26.40" stroke="currentColor" stroke-width="1.0"/><circle cx="54.76" cy="52.75" r="25.50" stroke="#D33021" stroke-width="1.25"/><circle cx="52.40" cy="55.93" r="24.60" stroke="currentColor" stroke-width="1.0"/><circle cx="47.99" cy="57.02" r="23.70" stroke="currentColor" stroke-width="1.0"/></g></svg>
+      <div class="core" id="core"><svg class="wave" viewBox="0 0 120 40" preserveAspectRatio="none" id="wave"></svg><span id="coreText"></span></div>
+    </div>
+    <div class="perc" id="perc"></div>
+    <div class="prompt" id="prompt"></div>
+    <div class="vlbl" id="voiceLbl"></div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <div class="wavebar"><span class="t" id="wtL">0:00</span><div class="bars" id="bars"></div><span class="t r" id="wtR">0:00</span></div>
+  <div class="ctl">
+    <button class="side" id="muteBtn"><svg class="i" viewBox="0 0 24 24" id="muteIcon"></svg><span id="muteLbl">sound</span></button>
+    <button class="round" id="pauseBtn" aria-label="Pause"><svg viewBox="0 0 24 24" id="pauseIcon"></svg></button>
+    <button class="side" id="skipBtn"><svg class="i" viewBox="0 0 24 24"><path d="M5 5l9 7-9 7z"/><path d="M18 5v14"/></svg><span>next</span></button>
+  </div>
+  <div class="clock" id="phaseClock"></div>
+</section>
+
+<!-- ================= END ================= -->
+<section class="screen" id="end">
+  <div class="endwrap">
+    <h2>Practice complete</h2>
+    <p>Nothing was forced. Today's perceptions:</p>
+    <ul class="card list" id="drawnList"></ul>
+    <textarea id="reflect" placeholder="Which one came alive on its own? (optional)"></textarea>
+    <button class="go" id="doneBtn">Done</button>
+  </div>
+</section>
+</div>
+
+<!-- ================= TABS ================= -->
+<nav class="tabs" id="tabs">
+  <button class="tab" data-tab="home" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+  <button class="tab" data-tab="progress" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Progress</button>
+  <button class="tab" data-tab="guide" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4zM20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>Guide</button>
+  <button class="tab" data-tab="voice" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M12 4a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V7a3 3 0 0 1 3-3z"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg>Voice</button>
+  <button class="tab" data-tab="settings" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg>Settings</button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+
+<!-- ================= SETTINGS ================= -->
+<div class="sheet" id="settings" role="dialog" aria-modal="true" aria-label="Settings">
+  <div class="grab"></div><h3>Settings</h3>
+  <div class="group">
+    <div class="row col"><div class="l"><b>Appearance</b><em id="themeSub"></em></div><div class="seg wide" id="themeSeg"><button data-v="system">Auto</button><button data-v="light">Light</button><button data-v="dark">Dark</button><button data-v="demidov">Demidov</button></div></div>
+    <div class="hide" style="display:none"><div class="seg" id="lenSeg"></div><div class="seg" id="guideSeg"></div><span id="guideSub"></span><div class="seg" id="advSeg"></div><span id="advSub"></span></div>
+    <div class="row"><div class="l"><b>Supplementary per week</b><span>Lump of Faith, Freedom, ANA</span></div><div class="seg" id="suppSeg"><button data-v="1">1</button><button data-v="2">2</button></div></div>
+    <div class="row"><div class="l"><b>Lump of Faith rounds</b><span>Four or five at most</span></div><div class="seg" id="lumpSeg"><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button></div></div>
+    <div class="row"><div class="l"><b>Freedom after scales</b><span>Three minutes of freedom at the end</span></div><button class="sw" id="freedomSw" role="switch" aria-checked="false" aria-label="Freedom after scales"></button></div>
+    <div class="row"><div class="l"><b>Draw from</b><span id="deckSub"></span></div><div class="seg" id="deckSeg"><button data-v="both">Both</button><button data-v="sensations">Sensations</button><button data-v="places">Places</button></div></div>
+    <div class="row"><div class="l"><b>Rest between scales</b><span>Optional pause before the next chime</span></div><div class="seg" id="restSeg"><button data-v="0">Off</button><button data-v="30">30s</button><button data-v="60">1m</button><button data-v="120">2m</button></div></div>
+    <div class="row"><div class="l"><b>Scales session</b><span id="tgtSub"></span></div><div class="seg" id="tgtSeg"><button data-v="600">10</button><button data-v="900">15</button><button data-v="1200">20</button><button data-v="0">Open</button></div></div>
+    <div class="row"><div class="l"><b>Vibrate on chime</b><span>Where supported</span></div><button class="sw" id="hapticSw" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
+  </div>
+  <div class="group">
+    <div class="row col"><div class="l"><b>Chime volume</b><em id="volChimeLbl"></em></div><div class="slider"><svg class="i" viewBox="0 0 24 24"><path d="M6 17h12l-1.5-3V10a4.5 4.5 0 0 0-9 0v4z"/><path d="M10 20h4"/></svg><input type="range" id="volChime" min="0" max="100" step="1" aria-label="Chime volume"></div></div>
+  </div>
+  <div class="group">
+    <div class="row"><div class="l"><b>Perceptions</b><span id="percSub"></span></div><button class="link" id="editBtn">Edit</button></div>
+    <div class="row"><div class="l"><b>Progress</b><span id="progSub"></span></div><button class="link" id="resetBtn">Reset</button></div>
+    <div class="row"><div class="l"><b>App version</b><span id="verSub"></span></div><button class="link" id="updateBtn">Check for update</button></div>
+  </div>
+  <div class="bar2"><button class="pill primary" id="closeSettings">Done</button></div>
+</div>
+
+<!-- ================= VOICE ================= -->
+<div class="sheet" id="voiceSheet" role="dialog" aria-modal="true" aria-label="Voice">
+  <div class="grab"></div><h3>Voice</h3>
+  <p class="help" id="narrSub"></p>
+  <div class="group">
+    <div class="row"><div class="l"><b>Narrator</b></div><div class="chips" id="narrChips"></div></div>
+    <div class="row col"><div class="l"><b>Volume</b><em id="volNarrLbl"></em></div><div class="slider"><svg class="i" viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/></svg><input type="range" id="volNarr" min="0" max="100" step="1" aria-label="Narrator volume"></div></div>
+    <div class="row col"><div class="l"><b>Pace</b><em id="paceLbl"></em></div><div class="slider"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><input type="range" id="pace" min="70" max="115" step="1" aria-label="Narration pace"></div></div>
+    <div class="row"><div class="l"><b>Record my own voice</b><span id="recSub"></span></div><button class="link" id="recBtn">Open</button></div>
+    <div class="row"><div class="l"><b>Voice packs</b><span id="packSub"></span></div><button class="link" id="packBtn">Manage</button></div>
+  </div>
+  <div class="bar2"><button class="pill" id="testVoice">Hear a line</button><button class="pill primary" id="closeVoice">Done</button></div>
+</div>
+
+<!-- ================= PERCEPTIONS ================= -->
+<div class="sheet" id="percSheet" role="dialog" aria-modal="true" aria-label="Perceptions">
+  <div class="grab"></div><h3>Perceptions</h3>
+  <p class="help">Andrei's lists plus a hundred more in the same register. One per line, no extraordinary or psychologically heightened themes. Lines you add here are read by the device voice until recorded.</p>
+  <textarea id="percEdit" class="big"></textarea>
+  <div class="bar2"><button class="pill" id="resetPerc">Restore defaults</button><button class="pill" id="cancelPerc">Cancel</button><button class="pill primary" id="savePerc">Save</button></div>
+</div>
+
+<!-- ================= RECORD ================= -->
+<div class="sheet" id="recSheet" role="dialog" aria-modal="true" aria-label="Record my own voice">
+  <div class="grab"></div><h3>Record my own voice</h3>
+  <p class="help" id="recHelp">Tap a line, read it, tap stop. Anything you haven't recorded plays in the selected narrator's voice, so you can do a few lines at a time.</p>
+  <div class="recbar"><div class="recprog"><i id="recProg"></i></div><span id="recCount"></span></div>
+  <div class="seg wide" id="recFilter"><button data-v="narr" aria-pressed="true">Narration</button><button data-v="perc" aria-pressed="false">Perceptions</button></div>
+  <ul class="reclist" id="recList"></ul>
+  <div class="bar2"><button class="pill" id="recExport">Share as voice pack</button><button class="pill" id="recClear">Delete all</button><button class="pill primary" id="closeRec">Done</button></div>
+</div>
+
+<!-- ================= PACKS ================= -->
+<div class="sheet" id="packSheet" role="dialog" aria-modal="true" aria-label="Voice packs">
+  <div class="grab"></div><h3>Voice packs</h3>
+  <p class="help" id="packState"></p>
+  <label class="drop"><span>Import a voice-pack.json</span><input type="file" id="packFile" accept=".json,application/json"></label>
+  <p class="note" id="packStatus" aria-live="polite"></p>
+  <div class="bar2"><button class="pill" id="testPack">Hear it</button><button class="pill" id="removePack">Remove imported</button><button class="pill primary" id="closePack">Done</button></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const T = __TEXTS__;
+const PACKS = __PACKS__;
+const SILENT = "__SILENT__";
+const BREATH_DUR = 300, SCALES = 5, PACE_FROM = 45, PACE_TO = 215, IN = 4, OUT = 6, GAP = 1.4;
+/* the voice-test line: a perception every pack is guaranteed to contain, so the switcher always demonstrates the recorded voice */
+const SAMPLE_LINE = T.perceptions[0] + ".";
+
+/* ---------- utils ---------- */
+const $ = id => document.getElementById(id);
+const store = { get(k, f){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : f; }catch(e){ return f; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }, del(k){ try{ localStorage.removeItem(k); }catch(e){} } };
+const fmt = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const dkey = x => { const d = new Date(x); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+function lineId(text){ let h = 5381; for(const ch of text){ h = ((Math.imul(h, 33) ^ ch.codePointAt(0)) >>> 0); } return h.toString(16).padStart(8, "0"); }
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2400); }
+function vibrate(p){ try{ if(settings.haptic && navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+const ICON = { pause:'<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>', play:'<path d="M7 4l13 8-13 8z"/>',
+  sound:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15 9.5a3.5 3.5 0 0 1 0 5"/><path d="M17.5 7a7 7 0 0 1 0 10"/>', muted:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/>' };
+
+/* ---------- settings ---------- */
+const settings = Object.assign({ haptic:true, theme:"system", scaleDur:180, pace:1, volNarr:1, volChime:0.5, narrator:"", guide:"silent", advance:"tap", target:900, demidovLight:false, suppTarget:2, lumpRounds:4, freedomAfter:false, deck:"both", rest:0 }, store.get("dm.settings", {}));
+if(!settings.v5){ settings.v5 = true; settings.rest = 0; }
+if(!settings.v3){ settings.v3 = true; settings.pace = 1; settings.volChime = Math.min(settings.volChime, 0.5); }
+if(!settings.v4){ settings.v4 = true; }
+settings.guide = "silent"; settings.advance = "tap";   /* the practice as taught: chime, perception, silence, tap */
+if(settings.guide === "full") settings.guide = "release";
+store.set("dm.settings", settings);
+const save = () => store.set("dm.settings", settings);
+let perceptions = store.get("dm.perceptions", null);
+if(!Array.isArray(perceptions) || perceptions.length < SCALES) perceptions = T.perceptions.slice();
+
+/* ---------- theme ---------- */
+function applyTheme(){
+  const r = document.documentElement;
+  if(settings.theme === "system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", settings.theme);
+  if(settings.theme === "demidov" && settings.demidovLight) r.setAttribute("data-variant", "light"); else r.removeAttribute("data-variant");
+  const dark = settings.theme === "dark" || (settings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+  $("metaTheme").setAttribute("content", settings.theme === "demidov" ? (settings.demidovLight ? "#FFFFFF" : "#000000") : dark ? "#0E1015" : "#F3F4F8");
+  $("themeSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.theme ? "true" : "false"));
+  $("themeSub").textContent = settings.theme === "demidov" ? ((settings.demidovLight ? "Light" : "Dark") + " · sun/moon switches") : "";
+}
+$("themeBtn").addEventListener("click", () => {
+  if(settings.theme === "demidov"){ settings.demidovLight = !settings.demidovLight; save(); applyTheme(); return; }
+  const dark = settings.theme === "dark" || (settings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches); settings.theme = dark ? "light" : "dark"; save(); applyTheme(); });
+$("themeSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.theme = b.dataset.v; save(); applyTheme(); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
+
+/* ---------- voice packs ---------- */
+let pack = null, imported = null; const urlCache = new Map();
+function idb(){ return new Promise((res, rej) => { const r = indexedDB.open("demidov", 1); r.onupgradeneeded = () => r.result.createObjectStore("kv"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function idbGet(k){ try{ const db = await idb(); return await new Promise((res, rej) => { const q = db.transaction("kv").objectStore("kv").get(k); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); }catch(e){ return null; } }
+async function idbSet(k, v){ const db = await idb(); return new Promise((res, rej) => { const tx = db.transaction("kv", "readwrite"); tx.objectStore("kv").put(v, k); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); }
+async function idbDel(k){ try{ const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction("kv", "readwrite"); tx.objectStore("kv").delete(k); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); }catch(e){} }
+let mine = null;   /* { voice:"My voice", provider:"recorded", clips:{id:{blob,m}}, dur:{id:s} } */
+function allPacks(){ return PACKS.concat(imported ? [imported] : []).concat(mine && Object.keys(mine.clips).length ? [mine] : []); }
+function choosePack(){
+  const want = settings.narrator, list = allPacks();
+  pack = want === "device" ? null : (list.find(p => p.voice === want) || list.find(p => /archer/i.test(p.voice)) || list[0] || null);
+  urlCache.clear();
+}
+const packName = () => pack ? String(pack.voice) : "Device voice";
+function clipUrl(id){
+  if(!pack) return null; if(urlCache.has(id)) return urlCache.get(id);
+  let c = pack.clips[id];
+  if(!c && pack === mine){ const fb = PACKS.find(p => /archer/i.test(p.voice)) || PACKS[0]; c = fb && fb.clips[id]; if(!c) return null; }
+  if(!c) return null;
+  if(c.blob){ const url = URL.createObjectURL(c.blob); urlCache.set(id, url); return url; }
+  const b64 = typeof c === "string" ? c : c.b, mime = typeof c === "string" ? "audio/mpeg" : (c.m || "audio/mpeg");
+  const bin = atob(b64), bytes = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const url = URL.createObjectURL(new Blob([bytes], { type:mime })); urlCache.set(id, url); return url;
+}
+function clipDur(text){ const id = lineId(text); let d = pack && pack.dur && pack.dur[id]; if(!d && pack === mine){ const fb = PACKS[0]; d = fb && fb.dur && fb.dur[id]; } return (d || (0.55 * text.split(/\s+/).length + 0.8)) / settings.pace; }
+function seqDur(parts){ return parts.reduce((a, t) => a + clipDur(t), 0) + GAP * (parts.length - 1); }
+async function loadPack(){
+  const p = await idbGet("voicePack"); if(p && p.clips){ p.voice = p.voice || "Imported"; imported = p; }
+  const r = await idbGet("myVoice"); mine = { voice:"My voice", provider:"recorded", clips:(r && r.clips) || {}, dur:(r && r.dur) || {} };
+  choosePack(); renderVoice();
+}
+async function saveMine(){ try{ await idbSet("myVoice", { clips:mine.clips, dur:mine.dur }); }catch(e){ toast("Couldn't save the recording"); } }
+function renderVoice(){
+  const covered = pack ? perceptions.filter(p => pack.clips[lineId(p + ".")]).length : 0;
+  const lines = pack ? T.all.filter(t => pack.clips[lineId(t)]).length : 0;
+  $("narrSub").textContent = pack ? `${packName()} · ${lines} of ${T.all.length} lines recorded` : "Uses the phone's own voice";
+  const chips = $("narrChips"); chips.innerHTML = "";
+  allPacks().map(p => [p.voice, p === imported ? p.voice + " (imported)" : p.voice]).concat([["device", "Device"]]).forEach(([v, label]) => {
+    const b = document.createElement("button"); b.textContent = label; b.setAttribute("aria-pressed", (pack ? pack.voice : "device") === v ? "true" : "false");
+    b.addEventListener("click", () => { settings.narrator = v; save(); choosePack(); renderVoice(); unlockAudio(); speak([SAMPLE_LINE], true); }); chips.appendChild(b);
+  });
+  $("packSub").textContent = pack ? `${packName()} · ${covered}/${perceptions.length} perceptions` : "Device voice";
+  const nMine = mine ? Object.keys(mine.clips).length : 0; $("recSub").textContent = nMine ? `${nMine} of ${allLines().length} lines recorded` : "Use your own voice, or Andre's";
+  $("packState").textContent = pack ? `${packName()}: ${Object.keys(pack.clips).length} recorded lines. ${covered} of ${perceptions.length} perceptions have audio; anything else uses the device voice.` : "The device voice is in use.";
+  $("removePack").style.display = imported ? "" : "none";
+  $("foot").textContent = (pack ? `Narrated by ${packName()}` : "Narrated by your device voice") + (navigator.onLine === false ? " · no connection, working offline" : " · works offline");
+  $("voiceLbl").textContent = "Voice: " + packName();
+  sliderUI("volNarr", Math.round(settings.volNarr * 100)); sliderUI("pace", Math.round(settings.pace * 100)); sliderLabels();
+}
+async function importPack(file){
+  $("packStatus").textContent = "Reading " + file.name + "…";
+  try{ const p = JSON.parse(await file.text()); if(!p || typeof p.clips !== "object") throw new Error("That file isn't a voice pack.");
+    p.voice = p.voice || "Imported"; await idbSet("voicePack", p); imported = p; settings.narrator = p.voice; save(); choosePack();
+    $("packStatus").textContent = `Imported ${Object.keys(p.clips).length} lines.`; renderVoice();
+  }catch(e){ $("packStatus").textContent = "Import failed: " + e.message; }
+}
+
+/* ---------- audio ---------- */
+let audioEl = null, queue = [], muted = false, actx = null, narrGain = null, chimeGain = null, srcNode = null, voice = null, curCue = null;
+function graph(){
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if(!narrGain){ narrGain = actx.createGain(); narrGain.connect(actx.destination); chimeGain = actx.createGain(); chimeGain.connect(actx.destination); }
+    narrGain.gain.value = settings.volNarr; chimeGain.gain.value = settings.volChime;
+    if(audioEl && !srcNode && settings.volNarr < 0.99){ srcNode = actx.createMediaElementSource(audioEl); srcNode.connect(narrGain); }
+  }catch(e){ if(audioEl) audioEl.volume = settings.volNarr; }
+}
+function applyRate(a){ try{ const r = Math.abs(settings.pace - 1) < 0.015 ? 1 : settings.pace; a.defaultPlaybackRate = r; a.playbackRate = r; a.preservesPitch = true; a.webkitPreservesPitch = true; }catch(e){} }
+function ensureAudio(){ if(!audioEl){ audioEl = new Audio(); audioEl.preload = "auto"; audioEl.setAttribute("playsinline", ""); audioEl.addEventListener("loadedmetadata", () => applyRate(audioEl)); audioEl.addEventListener("playing", () => applyRate(audioEl)); } applyRate(audioEl); return audioEl; }
+function unlockAudio(){
+  try{ const a = ensureAudio(); if(!a.src || a.src === SILENT){ a.src = SILENT; a.play().catch(() => {}); } }catch(e){}
+  try{ graph(); if(actx.state === "suspended") actx.resume(); }catch(e){}
+  try{ if("speechSynthesis" in window && !speechSynthesis.getVoices().length){ const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } }catch(e){}
+}
+function stopSpeech(){ queue = []; onQueueDone = null; try{ if(audioEl){ audioEl.onended = null; audioEl.pause(); } }catch(e){} try{ if("speechSynthesis" in window) speechSynthesis.cancel(); }catch(e){} }
+let onQueueDone = null;
+function speak(parts, force, done){ if(!force && (settings.volNarr <= 0 || muted)) return; stopSpeech(); queue = parts.slice(); onQueueDone = done || null; nextPart(); }
+function nextPart(){
+  const text = queue.shift(); if(text == null){ const cb = onQueueDone; onQueueDone = null; cb && cb(); return; }
+  if(running && curCue && curCue.release) $("prompt").textContent = text;
+  const after = () => setTimeout(nextPart, queue.length ? GAP * 1000 : 0);
+  const url = clipUrl(lineId(text));
+  if(url){ const a = ensureAudio(); a.onended = after; a.onerror = () => { a.onended = null; tts(text, after); }; a.src = url; graph(); a.play().then(() => applyRate(a)).catch(() => { a.onended = null; tts(text, after); }); }
+  else tts(text, after);
+}
+function pickVoice(){ if(!("speechSynthesis" in window)) return; const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang)); if(!vs.length) return; const rich = v => /enhanced|premium|neural|natural|siri/i.test(v.name); voice = vs.find(v => rich(v) && /en-GB/i.test(v.lang)) || vs.find(rich) || vs.find(v => /en-GB/i.test(v.lang)) || vs[0]; }
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.addEventListener("voiceschanged", pickVoice); }
+function tts(text, done){
+  if(!("speechSynthesis" in window)){ done && done(); return; }
+  try{ if(speechSynthesis.paused) speechSynthesis.resume(); const u = new SpeechSynthesisUtterance(text); if(!voice) pickVoice(); if(voice){ u.voice = voice; u.lang = voice.lang; } else u.lang = "en-GB";
+    u.rate = 0.86 * settings.pace; u.pitch = 0.95; u.volume = settings.volNarr; u.onend = () => done && done(); u.onerror = () => done && done(); speechSynthesis.speak(u);
+  }catch(e){ done && done(); }
+}
+function ripple(){ try{ ["p1r", "p1o"].forEach(id => $(id).beginElement()); setTimeout(() => ["p2r", "p2o"].forEach(id => $(id).beginElement()), 260); }catch(e){} const c = $("core"); c.classList.remove("bloom"); void c.offsetWidth; c.classList.add("bloom"); }
+function bell(){
+  vibrate([30, 60, 30]); ripple();
+  if(muted || settings.volChime <= 0) return;
+  try{ graph(); if(actx.state === "suspended") actx.resume(); const now = actx.currentTime;
+    [[660, .20, 3.0], [1318, .07, 2.2], [1980, .025, 1.5]].forEach(([f, g0, d]) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, now); g.gain.exponentialRampToValueAtTime(g0, now + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, now + d); o.connect(g).connect(chimeGain); o.start(now); o.stop(now + d + 0.1); });
+  }catch(e){}
+}
+
+/* ---------- schedule ---------- */
+function deckPool(){
+  const d = T.decks || {}, S = new Set(d.sensations || []), P = new Set(d.places || []);
+  if(settings.deck === "sensations") return perceptions.filter(p => S.has(p) || (!S.has(p) && !P.has(p)));
+  if(settings.deck === "places") return perceptions.filter(p => P.has(p) || (!S.has(p) && !P.has(p)));
+  return perceptions;
+}
+function draw(n, exclude){
+  const all = deckPool(), recent = new Set(store.get("dm.recent", []).concat(exclude || []));
+  let pool = all.filter(p => !recent.has(p)); if(pool.length < n) pool = all.filter(p => !(exclude || []).includes(p));
+  const out = []; while(out.length < n && pool.length){ const i = Math.floor(Math.random() * pool.length); out.push(pool.splice(i, 1)[0]); } return out;
+}
+let phases = [], TOTAL = 0, OPEN = false, mode = "full", drawn = [];
+function makeScale(perception, i){
+  const D = settings.scaleDur, g = settings.guide, cues = []; let t0 = 6;
+  const rel = T.scaleCues.slice(4).map(x => x[1]);
+  if(settings.advance === "tap"){
+    cues.push({ t:6, parts:[perception + "."], show:"", perc:true });
+    return { kind:"scale", open:true, title:perception, label:`Scale ${i + 1}`, dur:0, cues, release:g === "silent" ? [] : rel };
+  }
+  if(i === 0 && g !== "silent"){ cues.push({ t:3, parts:[T.intro], show:"Sit easily. Something will be there straight away." }); t0 = 3 + clipDur(T.intro) + 3; }
+  cues.push({ t:Math.round(t0), parts:[perception + "."], show:g === "silent" ? "" : "Surrender to what is already there, however small.", perc:true });
+  if(g !== "silent"){
+    const relStart = Math.max(t0 + clipDur(perception + ".") + 12, D - 3 - seqDur(rel));
+    cues.push({ t:Math.round(relStart), parts:rel, show:rel[0], release:true });
+  }
+  return { kind:"scale", title:perception, label:`Scale ${i + 1} of ${SCALES}`, dur:D, cues };
+}
+const EXL = k => (T.exercises[k] || { lines:[] }).lines;
+function ph(label, line, dur, show, extra){ const p = Object.assign({ kind:"ex", label, dur:dur || 0, open:!dur, cues:[{ t:1, parts:line ? [line] : [], show:show || "" }], release:[] }, extra || {}); if(p.open) p.cues[0].tapHint = true; return p; }
+function freedomPhases(){ const L = EXL("freedom"); return [ph("Three minutes of freedom", L[0], 180 + 12, "Think what you feel like thinking. Feel what you feel like feeling. Do what you feel like doing.", { core:"free" })]; }
+function exercisePhases(k){
+  const L = EXL(k);
+  if(k === "freedom") return freedomPhases();
+  if(k === "lump"){
+    const out = [ph("Lump of Faith", L[0], 22, "Sit calmly, in a calm place.")];
+    for(let r = 1; r <= settings.lumpRounds; r++){
+      out.push(ph(`Round ${r}`, L[1], 16, "Think of something."));
+      out.push(ph(`Round ${r}`, L[2], 9, "Can I do that?"));
+      out.push(ph(`Round ${r}`, L[3], 0, "Follow through. Do it, then tap."));
+      out.push(ph(`Round ${r}`, L[4], 22, "Sense the glow of having succeeded."));
+      out.push(ph(`Round ${r}`, L[5], 18, "Rest."));
+    }
+    out.push(ph("Lump of Faith", L[6], 10, "That's enough."));
+    return out.concat(freedomPhases());
+  }
+  if(k === "ana"){
+    const out = [
+      ph("ANA breath", L[0], 45, "Sense the asana of your position.", { core:"" }),
+      ph("ANA breath", L[1], 60, "Natural breathing. Just notice.", { core:"" }),
+      ph("ANA breath", L[2], 75, "Inhale · Ana", { core:"Ana" }),
+      ph("ANA breath", L[3], 60, "Exhale · Ana", { core:"Ana" }),
+      ph("ANA breath", L[4], 150, "Inhale · Ana   Exhale · Ana", { core:"Ana" }),
+      ph("ANA breath", L[5], 120, "Inhale · Ana   Exhale · Hu", { core:"Ana · Hu" }),
+      ph("ANA breath", L[6], 90, "Inhale · I   Exhale · am", { core:"I · am" }),
+      ph("ANA breath", L[7], 90, "Let the words fade.", { core:"" }),
+      ph("Asana", L[8], 40, "Let the space arrive to you.", { core:"" }),
+    ];
+    for(let r = 1; r <= 3; r++){
+      out.push(ph(`Asana ${r}`, r === 1 ? L[9] : L[11], 0, "Let the eye land on a point. Move toward it. Tap when all of you is there.", { core:"" }));
+      out.push(ph(`Asana ${r}`, L[10], 16, "When the unity is fully present, say out loud: I am.", { core:"I am" }));
+    }
+    out.push(ph("ANA breath", L[12], 12, "Let it go.", { core:"" }));
+    return out;
+  }
+  return [];
+}
+function buildPhases(){
+  phases = []; drawn = [];
+  if(EX[mode]){ phases = exercisePhases(mode); let a = 0; phases.forEach(p => { p.start = a; a += p.dur; }); TOTAL = a; OPEN = phases.some(p => p.open); return; }
+  if(mode !== "scales") phases.push({ kind:"breath", title:"Breathing", label:"Breathing", dur:BREATH_DUR, cues:T.breath.map(([t, text]) => ({ t, parts:[text], show:text })) });
+  if(mode !== "breath"){
+    if(settings.advance === "tap"){ const p = draw(1)[0]; drawn.push(p); phases.push(makeScale(p, 0)); }
+    else { drawn = draw(SCALES); drawn.forEach((p, i) => phases.push(makeScale(p, i))); }
+  }
+  let a = 0; phases.forEach(p => { p.start = a; a += p.dur; }); TOTAL = a;
+  OPEN = phases.some(p => p.open);
+}
+
+/* ---------- home ---------- */
+let homeMode = "full";
+function renderHome(){
+  const h = new Date().getHours();
+  $("greetK").textContent = (h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening") + " · " + new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" });
+  const sm = settings.scaleDur / 60 * SCALES;
+  const tap = settings.advance === "tap";
+  const tg = settings.target ? `about ${settings.target / 60} min` : "open-ended";
+  const t = homeMode === "full" ? [tap ? "Breathing, then scales" : `A ${sm + 5}-minute practice for today`, tap ? `5 min breathing · scales at your own pace, ${tg}` : `5 min breathing · 5 perceptions · ${sm} min`] : homeMode === "breath" ? ["A 5-minute breathing practice", "Arrive, settle, and open your hearing"] : [tap ? (settings.target ? `Scales, ${tg}` : "Scales, open-ended") : `${sm} minutes of scales`, tap ? "Each perception stays until you tap" : "Five perceptions, drawn at random"];
+  $("heroT").textContent = t[0]; $("heroM").textContent = t[1];
+  $("modes").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.m === homeMode ? "true" : "false"));
+  renderWeek(store.get("dm.log", []));
+  $("progSub").textContent = (store.get("dm.log", []).length || "No") + " sessions logged";
+  $("percSub").textContent = `${perceptions.length} in the deck`;
+  $("hapticSw").setAttribute("aria-checked", settings.haptic);
+  $("lenSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.scaleDur ? "true" : "false"));
+  $("guideSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.guide ? "true" : "false"));
+  $("guideSub").textContent = settings.guide === "silent" ? "Perception, then silence" : "Short release lines when you let it go";
+  $("advSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.advance ? "true" : "false"));
+  $("advSub").textContent = settings.advance === "tap" ? "Stay with it until it fades, then tap" : `Moves on after ${settings.scaleDur / 60} minutes`;
+  $("tgtSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.target ? "true" : "false"));
+  $("suppSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.suppTarget ? "true" : "false"));
+  $("deckSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.deck ? "true" : "false"));
+  $("restSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.rest ? "true" : "false"));
+  $("deckSub").textContent = `${deckPool().length} themes`;
+  $("lumpSeg").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.v === settings.lumpRounds ? "true" : "false"));
+  $("freedomSw").setAttribute("aria-checked", settings.freedomAfter);
+  renderSupp(store.get("dm.log", []));
+  $("tgtSub").textContent = settings.target ? `Minutes. New perceptions until then; it closes on your next tap` : "Keeps going until you end it";
+  sliderUI("volChime", Math.round(settings.volChime * 100)); sliderLabels();
+}
+function renderWeek(log){
+  const full = new Set(), half = new Set(); log.forEach(e => { if(EX[e.mode]) return; if(e.mode === "breath") half.add(e.d); else full.add(e.d); });
+  const today = new Date(), tk = dkey(today), mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+  const box = $("days"); box.innerHTML = ""; let week = 0;
+  for(let i = 0; i < 7; i++){
+    const d = new Date(mon); d.setDate(mon.getDate() + i); const k = dkey(d), el = document.createElement("div"); el.className = "day";
+    if(full.has(k)){ el.classList.add("done"); week++; } else if(half.has(k)) el.classList.add("half");
+    if(k === tk) el.classList.add("today"); else if(d > today) el.classList.add("future");
+    el.innerHTML = '<div class="c"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><small></small>'; el.querySelector("small").textContent = "MTWTFSS"[i]; box.appendChild(el);
+  }
+  let streak = 0; const d = new Date(); if(!full.has(dkey(d))) d.setDate(d.getDate() - 1); while(full.has(dkey(d))){ streak++; d.setDate(d.getDate() - 1); }
+  $("stStreak").textContent = streak; $("stWeek").textContent = week; $("stMonth").textContent = log.filter(e => e.mode !== "breath" && !EX[e.mode] && e.d.slice(0, 7) === tk.slice(0, 7)).length;
+  $("weekSub").textContent = full.has(tk) ? "Done for today" : streak ? "Keep it going" : "Begin when you're ready";
+}
+$("modes").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; homeMode = b.dataset.m; renderHome(); vibrate(10); });
+$("startBtn").addEventListener("click", () => start(homeMode));
+
+/* ---------- progress ---------- */
+let mView = new Date();
+function renderProgress(){
+  const log = store.get("dm.log", []), full = new Set(), half = new Set(), supp = new Set(); log.forEach(e => { if(EX[e.mode]) supp.add(e.d); else if(e.mode === "breath") half.add(e.d); else full.add(e.d); });
+  const y = mView.getFullYear(), m = mView.getMonth(), tk = dkey(new Date());
+  $("mTitle").textContent = mView.toLocaleDateString("en-GB", { month:"long", year:"numeric" });
+  const g = $("mgrid"); g.innerHTML = "";
+  "MTWTFSS".split("").forEach(w => { const d = document.createElement("div"); d.className = "wd"; d.textContent = w; g.appendChild(d); });
+  const lead = (new Date(y, m, 1).getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+  for(let i = 0; i < lead; i++){ const d = document.createElement("div"); d.className = "md blank"; g.appendChild(d); }
+  for(let i = 1; i <= days; i++){ const k = dkey(new Date(y, m, i)), d = document.createElement("div"); d.className = "md"; d.textContent = i; if(full.has(k)) d.classList.add("done"); else if(half.has(k)) d.classList.add("half"); if(supp.has(k)) d.classList.add("supp"); if(k === tk) d.classList.add("today"); g.appendChild(d); }
+  const ul = $("hist"); ul.innerHTML = ""; const recent = log.slice(-10).reverse();
+  recent.forEach(e => { const li = document.createElement("li"); li.innerHTML = "<b></b><span></span>"; li.querySelector("b").textContent = new Date(e.at || e.d).toLocaleDateString("en-GB", { weekday:"short", day:"numeric", month:"short" }) + " · " + (EX[e.mode] ? EX[e.mode].name : e.mode === "breath" ? "Breathing" : e.mode === "scales" ? "Scales" : "Full"); li.querySelector("span").textContent = e.perceptions ? e.perceptions.join(", ") : (e.secs ? fmt(e.secs) : "5 min"); ul.appendChild(li); });
+  if(!recent.length){ const li = document.createElement("li"); li.innerHTML = "<b>No sessions yet</b>"; ul.appendChild(li); }
+  $("histSub").textContent = log.length ? `${log.length} total` : "";
+}
+$("mPrev").addEventListener("click", () => { mView = new Date(mView.getFullYear(), mView.getMonth() - 1, 1); renderProgress(); });
+$("mNext").addEventListener("click", () => { mView = new Date(mView.getFullYear(), mView.getMonth() + 1, 1); renderProgress(); });
+
+/* ---------- navigation ---------- */
+function show(id){ document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); $("tabs").classList.toggle("hide", id === "session" || id === "end"); if(id === "home" || id === "progress" || id === "guide") setTab(id); }
+function setTab(t){ $("tabs").querySelectorAll(".tab").forEach(b => b.setAttribute("aria-pressed", b.dataset.tab === t ? "true" : "false")); }
+function openSheet(id){ document.querySelectorAll(".sheet").forEach(s => s.classList.remove("on")); $("scrim").classList.add("on"); $(id).classList.add("on"); }
+function closeSheets(){ $("scrim").classList.remove("on"); document.querySelectorAll(".sheet").forEach(s => s.classList.remove("on")); renderHome(); setTab($("progress").classList.contains("on") ? "progress" : $("guide").classList.contains("on") ? "guide" : "home"); }
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if(!b) return; const t = b.dataset.tab; vibrate(8);
+  if(t === "home"){ closeSheets(); show("home"); } else if(t === "progress"){ closeSheets(); renderProgress(); show("progress"); } else if(t === "guide"){ closeSheets(); show("guide"); }
+  else if(t === "voice"){ unlockAudio(); renderVoice(); openSheet("voiceSheet"); setTab("voice"); } else { unlockAudio(); openSheet("settings"); setTab("settings"); }
+});
+$("settingsBtn").addEventListener("click", () => { unlockAudio(); openSheet("settings"); setTab("settings"); });
+$("scrim").addEventListener("click", closeSheets);
+$("closeSettings").addEventListener("click", closeSheets); $("closeVoice").addEventListener("click", closeSheets); $("cancelPerc").addEventListener("click", closeSheets);
+$("closePack").addEventListener("click", () => { renderVoice(); openSheet("voiceSheet"); });
+$("packBtn").addEventListener("click", () => { $("packStatus").textContent = ""; openSheet("packSheet"); });
+$("editBtn").addEventListener("click", () => { $("percEdit").value = perceptions.join("\n"); openSheet("percSheet"); });
+$("savePerc").addEventListener("click", () => { const list = Array.from(new Set($("percEdit").value.split("\n").map(l => l.trim()).filter(Boolean))); if(list.length < SCALES){ toast("Keep at least five perceptions"); return; } perceptions = list; store.set("dm.perceptions", perceptions); closeSheets(); toast("Saved"); });
+$("resetPerc").addEventListener("click", () => { $("percEdit").value = T.perceptions.join("\n"); });
+$("packFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; if(f) importPack(f); e.target.value = ""; });
+$("testPack").addEventListener("click", () => { unlockAudio(); speak([SAMPLE_LINE], true); });
+$("testVoice").addEventListener("click", () => { unlockAudio(); speak([SAMPLE_LINE], true); });
+$("removePack").addEventListener("click", async () => { await idbDel("voicePack"); imported = null; settings.narrator = ""; save(); choosePack(); renderVoice(); $("packStatus").textContent = "Imported pack removed."; });
+let resetArm = 0; $("resetBtn").addEventListener("click", () => { const now = Date.now(); if(now - resetArm < 3500){ resetArm = 0; ["dm.log", "dm.recent", "dm.reflections"].forEach(store.del); renderHome(); toast("Progress cleared"); } else { resetArm = now; toast("Tap Reset again to clear streak, log and notes"); } });
+$("hapticSw").addEventListener("click", e => { settings.haptic = !settings.haptic; save(); e.currentTarget.setAttribute("aria-checked", settings.haptic); vibrate(20); });
+$("lenSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.scaleDur = +b.dataset.v; save(); renderHome(); });
+$("guideSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.guide = b.dataset.v; save(); renderHome(); vibrate(10); });
+$("advSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.advance = b.dataset.v; save(); renderHome(); vibrate(10); });
+$("tgtSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.target = +b.dataset.v; save(); renderHome(); vibrate(10); });
+$("deckSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.deck = b.dataset.v; save(); renderHome(); });
+$("restSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.rest = +b.dataset.v; save(); renderHome(); });
+$("suppSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.suppTarget = +b.dataset.v; save(); renderHome(); });
+$("lumpSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.lumpRounds = +b.dataset.v; save(); renderHome(); });
+$("freedomSw").addEventListener("click", e => { settings.freedomAfter = !settings.freedomAfter; save(); e.currentTarget.setAttribute("aria-checked", settings.freedomAfter); });
+const EX = { lump:{ name:"Lump of Faith", sub:"with three minutes of freedom", mins:"12 min" }, ana:{ name:"ANA Breath", sub:"meditation and asana", mins:"15 min" } };
+const EXICON = { lump:'<path d="M12 3l2.4 6.1L21 10l-5 4.2 1.6 6.6L12 17.3 6.4 20.8 8 14.2 3 10l6.6-.9z"/>', ana:'<path d="M3 13c3-5 6-5 9 0s6 5 9 0"/><path d="M3 18c3-5 6-5 9 0s6 5 9 0" opacity=".45"/>' };
+function weekKeys(){ const today = new Date(), mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7)); const ks = []; for(let i = 0; i < 7; i++){ const d = new Date(mon); d.setDate(mon.getDate() + i); ks.push(dkey(d)); } return ks; }
+function renderSupp(log){
+  const wk = new Set(weekKeys()), box = $("supp"); box.innerHTML = "";
+  Object.keys(EX).forEach(k => {
+    const done = log.filter(e => e.mode === k && wk.has(e.d)).length, tgt = settings.suppTarget;
+    const last = [...log].reverse().find(e => e.mode === k);
+    const b = document.createElement("button"); b.innerHTML = `<span class="ic"><svg class="i" viewBox="0 0 24 24">${EXICON[k]}</svg></span><b></b><small></small><div class="w"></div><em></em>`;
+    b.querySelector("b").textContent = EX[k].name; b.querySelector("small").textContent = EX[k].mins + " · " + EX[k].sub;
+    b.querySelector("em").textContent = done >= tgt ? "Done this week" : last ? "Last: " + new Date(last.at || last.d).toLocaleDateString("en-GB", { weekday:"short", day:"numeric", month:"short" }) : "Not yet this week";
+    const w = b.querySelector(".w"); for(let i = 0; i < Math.max(tgt, done); i++){ const d = document.createElement("i"); if(i < done) d.className = "d"; w.appendChild(d); }
+    w.appendChild(b.querySelector("em"));
+    b.addEventListener("click", () => start(k)); box.appendChild(b);
+  });
+}
+
+/* ---------- sliders ---------- */
+function sliderUI(id, v){ const el = $(id); el.value = v; el.style.setProperty("--p", ((v - el.min) / (el.max - el.min) * 100) + "%"); }
+function sliderLabels(){ $("volNarrLbl").textContent = settings.volNarr <= 0 ? "Off" : Math.round(settings.volNarr * 100) + "%"; $("volChimeLbl").textContent = settings.volChime <= 0 ? "Off" : Math.round(settings.volChime * 100) + "%"; $("paceLbl").textContent = settings.pace < 0.985 ? `Slower · ${Math.round(settings.pace * 100)}%` : settings.pace > 1.015 ? `Faster · ${Math.round(settings.pace * 100)}%` : "Natural"; }
+let sampleT = null; function sample(what){ clearTimeout(sampleT); sampleT = setTimeout(() => { unlockAudio(); if(what === "chime") bell(); else speak([SAMPLE_LINE], true); }, 350); }
+$("volNarr").addEventListener("input", e => { settings.volNarr = +e.target.value / 100; sliderUI("volNarr", e.target.value); sliderLabels(); graph(); });
+$("volNarr").addEventListener("change", () => { save(); sample("narr"); });
+$("volChime").addEventListener("input", e => { settings.volChime = +e.target.value / 100; sliderUI("volChime", e.target.value); sliderLabels(); graph(); });
+$("volChime").addEventListener("change", () => { save(); sample("chime"); });
+$("pace").addEventListener("input", e => { settings.pace = +e.target.value / 100; sliderUI("pace", e.target.value); sliderLabels(); if(audioEl) applyRate(audioEl); });
+$("pace").addEventListener("change", () => { save(); sample("narr"); });
+
+/* ---------- session ---------- */
+let running = false, paused = false, curIdx = -1, timer = null, raf = null, wake = null;
+let phaseBefore = 0, phaseAt = 0, sessionBefore = 0, sessionAt = 0, fired = new Set(), releasing = false, scalesBefore = 0, scalesAt = 0;
+const inScales = () => scalesBefore + (paused || !running || !(phases[curIdx] && phases[curIdx].kind === "scale") ? 0 : (performance.now() - scalesAt) / 1000);
+const inPhase = () => phaseBefore + (paused || !running ? 0 : (performance.now() - phaseAt) / 1000);
+const inSession = () => sessionBefore + (paused || !running ? 0 : (performance.now() - sessionAt) / 1000);
+async function holdScreen(){ try{ if("wakeLock" in navigator) wake = await navigator.wakeLock.request("screen"); }catch(e){} }
+function releaseScreen(){ try{ wake && wake.release(); }catch(e){} wake = null; }
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && running && !paused) holdScreen(); });
+function setIcons(){ $("pauseIcon").innerHTML = paused ? ICON.play : ICON.pause; $("pauseBtn").setAttribute("aria-label", paused ? "Resume" : "Pause"); $("muteIcon").innerHTML = muted ? ICON.muted : ICON.sound; $("muteLbl").textContent = muted ? "muted" : "sound"; }
+function start(m){
+  mode = m; buildPhases(); unlockAudio();
+  running = true; paused = false; muted = false; releasing = false; curIdx = -1; curCue = null;
+  sessionBefore = 0; sessionAt = performance.now(); scalesBefore = 0; scalesAt = performance.now();
+  const dots = $("dots"); dots.innerHTML = ""; if(mode !== "breath" && !EX[mode] && settings.advance !== "tap") for(let i = 0; i < SCALES; i++) dots.appendChild(document.createElement("i"));
+  const bars = $("bars"); bars.innerHTML = ""; for(let i = 0; i < 34; i++){ const b = document.createElement("i"); b.style.setProperty("--h", (28 + 60 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * .6))).toFixed(0) + "%"); bars.appendChild(b); }
+  $("perc").textContent = ""; $("perc").classList.remove("on"); $("prompt").classList.remove("on"); $("coreText").classList.remove("on"); $("voiceLbl").textContent = "Voice: " + packName();
+  setIcons(); show("session"); holdScreen(); document.body.classList.add("live");
+  enterPhase(0); timer = setInterval(tick, 250); raf = requestAnimationFrame(animate);
+}
+function enterPhase(i){
+  if(curIdx >= 0 && phases[curIdx] && phases[curIdx].kind === "scale") scalesBefore = inScales();
+  if(i >= phases.length){
+    const last = phases[phases.length - 1];
+    const more = !(settings.target && scalesBefore >= settings.target);
+    if(last && last.open && last.kind === "scale" && more && settings.rest){ phases.push({ kind:"rest", open:false, label:"Rest", dur:settings.rest, cues:[], release:[], start:0 }); }
+    else if(last && (last.kind === "rest" || (last.open && last.kind === "scale")) && more && (last.kind === "rest" || !settings.rest)){ const used = drawn.slice(); const p = draw(1, used)[0] || draw(1)[0]; drawn.push(p); phases.push(makeScale(p, phases.length)); }
+    else if(last && last.kind === "scale" && settings.freedomAfter && !phases.some(p => p.core === "free")){ freedomPhases().forEach(p => { p.start = 0; phases.push(p); }); }
+    else { finish(true); return; }
+  }
+  const p = phases[i]; curIdx = i; fired = new Set(); releasing = false; phaseBefore = 0; phaseAt = performance.now(); scalesAt = performance.now();
+  const prev = phases[i - 1];
+  if(p.kind === "ex"){ if(prev && (prev.open || prev.label !== p.label || p.core === "free")) bell(); } else if(p.kind === "rest"){ } else if(i > 0 || p.kind === "scale") bell();
+  $("phaseK").textContent = p.label; $("perc").textContent = ""; $("perc").classList.remove("on"); $("perc").style.opacity = ""; $("prompt").textContent = ""; $("prompt").classList.remove("on");
+  const si = phases.filter((x, k) => x.kind === "scale" && k < i).length;
+  $("dots").querySelectorAll("i").forEach((d, k) => { d.className = p.kind === "scale" ? (k < si ? "d" : k === si ? "c" : "") : ""; });
+  if(p.open && p.kind === "scale"){ const dots = $("dots"); dots.innerHTML = ""; for(let k = 0; k <= si; k++){ const d = document.createElement("i"); d.className = k < si ? "d" : "c"; dots.appendChild(d); } }
+  if(p.kind === "ex") $("dots").innerHTML = "";
+  $("skipBtn").querySelector("span").textContent = (p.kind === "ex" || p.kind === "rest") ? "next" : p.open ? "let go" : "next";
+  tick();
+}
+function tick(){
+  if(!running) return;
+  const p = phases[curIdx]; if(!p) return; const t = inPhase();
+  if(!p.open && t >= p.dur){ enterPhase(curIdx + 1); return; }
+  p.cues.forEach((c, j) => { if(!fired.has(j) && t >= c.t){ fired.add(j); if(t - c.t < 4){ if(c.perc){ $("perc").textContent = p.title; $("perc").classList.add("on"); } $("prompt").textContent = c.show; $("prompt").classList.toggle("on", !!c.show); if(c.release) $("perc").style.opacity = ".35"; curCue = c; speak(c.parts); } } });
+  if(p.kind === "scale" && p.open && !releasing && t > 6 + clipDur(p.title + ".") + 2 && !$("prompt").textContent){ $("prompt").textContent = "Tap anywhere when it has faded."; $("prompt").classList.add("on"); }
+  if(p.kind === "rest"){ $("phaseClock").textContent = "Rest · " + fmt(p.dur - t); $("total").textContent = fmt(inSession()); $("wtL").textContent = fmt(t); $("wtR").textContent = fmt(p.dur); if(!$("prompt").textContent){ $("prompt").textContent = "Rest. Nothing to do. The next theme comes with the chime."; $("prompt").classList.add("on"); } }
+  else if(p.kind === "ex"){ $("phaseClock").textContent = p.open ? fmt(t) + " · tap when ready" : fmt(p.dur - t) + " in this part"; $("total").textContent = fmt(inSession()); $("wtL").textContent = fmt(t); $("wtR").textContent = p.open ? "your pace" : fmt(p.dur); }
+  else if(p.open){ const sc = inScales(), tg = settings.target; $("phaseClock").textContent = fmt(t) + " in this scale" + (tg ? ` · ${fmt(sc)} of ${fmt(tg)}` : ""); $("total").textContent = fmt(inSession()); $("wtL").textContent = fmt(sc); $("wtR").textContent = releasing ? "letting go" : (tg ? (sc >= tg ? "last one" : fmt(tg)) : "open"); }
+  else { $("phaseClock").textContent = fmt(p.dur - t) + " left in this " + (p.kind === "scale" ? "scale" : "part"); $("total").textContent = OPEN ? fmt(inSession()) : fmt(TOTAL - (p.start + t)); $("wtL").textContent = fmt(t); $("wtR").textContent = fmt(p.dur); }
+  const bs = $("bars").children, n = bs.length, live = audioEl && !audioEl.paused && !audioEl.ended;
+  const frac = (p.kind === "ex" || p.kind === "rest") ? (p.open ? ((t % 60) / 60) : (t / p.dur)) : p.open ? (settings.target ? Math.min(1, inScales() / settings.target) : ((t % 60) / 60)) : (t / p.dur), head = Math.min(n - 1, Math.floor(frac * n));
+  for(let k = 0; k < n; k++) bs[k].className = k < head ? "f" : (k === head ? (live ? "h" : "f") : "");
+}
+function advance(){
+  if(!running || paused) return; const p = phases[curIdx]; if(!p) return;
+  if(p.open && (releasing || inPhase() < 3)) return;
+  vibrate(12);
+  if(p.kind === "ex" && p.open){ stopSpeech(); enterPhase(curIdx + 1); return; }
+  if(p.open && p.release.length && inPhase() > 4){
+    releasing = true; $("perc").style.opacity = ".35"; $("prompt").textContent = p.release[0]; $("prompt").classList.add("on"); curCue = { release:true };
+    speak(p.release, false, () => { if(running && !paused && phases[curIdx] === p) enterPhase(curIdx + 1); });
+    if(settings.volNarr <= 0 || muted) enterPhase(curIdx + 1);
+    return;
+  }
+  stopSpeech(); enterPhase(curIdx + 1);
+}
+function animate(){
+  if(!running) return;
+  const p = phases[Math.max(0, curIdx)], e = inSession(), t = inPhase(); let s, label = "";
+  if(p && p.kind === "breath"){ if(t >= PACE_FROM && t < PACE_TO){ const c = (t - PACE_FROM) % (IN + OUT); if(c < IN){ const x = c / IN; s = 0.62 + 0.38 * (0.5 - 0.5 * Math.cos(Math.PI * x)); label = "Breathe in"; } else { const x = (c - IN) / OUT; s = 1 - 0.38 * (0.5 - 0.5 * Math.cos(Math.PI * x)); label = "Breathe out"; } } else s = 0.76 + 0.04 * Math.sin(e * 0.6); }
+  else s = 0.80 + 0.03 * Math.sin(e * 0.45);
+  if(paused) label = "Paused";
+  $("mark").style.transform = `rotate(${(e * 5).toFixed(1)}deg) scale(${(0.6 + s * 0.4).toFixed(4)})`;
+  $("r1").style.transform = `scale(${(0.55 + s * 0.45).toFixed(4)})`; $("r2").style.transform = `scale(${(0.6 + s * 0.4).toFixed(4)})`; $("r3").style.transform = `scale(${(0.7 + s * 0.3).toFixed(4)})`; $("core").style.transform = `scale(${(0.86 + s * 0.14).toFixed(4)})`;
+  if(!label && p && p.kind === "scale" && !p.open) label = fmt(p.dur - t);
+  if(!label && p && p.kind === "ex") label = p.core === "free" ? fmt(Math.max(0, p.dur - t)) : (p.core || "");
+  if(!label && p && p.kind === "rest") label = "Rest";
+  const ct = $("coreText"); if(ct.textContent !== label) ct.textContent = label; ct.classList.toggle("on", !!label);
+  const ph = e * 1.6, amp = 6 + 8 * (s - 0.62) / 0.38; let d = "", d2 = "";
+  for(let k = 0; k <= 60; k++){ const x = k * 2, env = Math.sin(k / 60 * Math.PI); d += (k ? " L" : "M") + x + " " + (20 + Math.sin(x / 9 + ph) * amp * env).toFixed(2); d2 += (k ? " L" : "M") + x + " " + (20 + Math.sin(x / 7 - ph * 1.3) * amp * .6 * env).toFixed(2); }
+  $("wave").innerHTML = `<path d="${d}"/><path d="${d2}" opacity=".6"/>`;
+  raf = requestAnimationFrame(animate);
+}
+function togglePause(){ if(!running) return; if(!paused){ phaseBefore = inPhase(); sessionBefore = inSession(); scalesBefore = inScales(); paused = true; stopSpeech(); releaseScreen(); } else { paused = false; phaseAt = performance.now(); sessionAt = performance.now(); scalesAt = performance.now(); holdScreen(); unlockAudio(); } setIcons(); vibrate(15); tick(); }
+function skip(){ if(!running) return; if(paused){ paused = false; phaseAt = performance.now(); sessionAt = performance.now(); scalesAt = performance.now(); setIcons(); } stopSpeech(); enterPhase(curIdx + 1); }
+function finish(complete){
+  running = false; clearInterval(timer); cancelAnimationFrame(raf); releaseScreen(); stopSpeech(); document.body.classList.remove("live");
+  if(!complete){ show("home"); renderHome(); return; }
+  bell(); const log = store.get("dm.log", []);
+  if(EX[mode]){
+    log.push({ d:dkey(new Date()), at:Date.now(), mode, secs:Math.round(inSession()) }); store.set("dm.log", log);
+    const ul = $("drawnList"); ul.innerHTML = ""; const li = document.createElement("li"); li.textContent = `${EX[mode].name} · ${fmt(inSession())}`; ul.appendChild(li);
+    $("reflect").value = ""; show("end"); return;
+  }
+  setTimeout(() => speak([mode === "breath" ? T.endBreath : T.endScales]), 900);
+  if(mode === "breath"){ log.push({ d:dkey(new Date()), at:Date.now(), mode }); store.set("dm.log", log); toast("Centred. Scales when you're ready."); show("home"); renderHome(); return; }
+  store.set("dm.recent", store.get("dm.recent", []).concat(drawn).slice(-15));
+  log.push({ d:dkey(new Date()), at:Date.now(), perceptions:drawn, mode, secs:Math.round(inSession()) }); store.set("dm.log", log);
+  const ul = $("drawnList"); ul.innerHTML = ""; drawn.forEach((x, i) => { const li = document.createElement("li"), em = document.createElement("em"); em.textContent = i + 1; li.append(em, document.createTextNode(x)); ul.appendChild(li); });
+  $("reflect").value = ""; show("end");
+}
+$("pauseBtn").addEventListener("click", togglePause); $("skipBtn").addEventListener("click", () => { const p = phases[curIdx]; if(p && p.open) advance(); else skip(); });
+$("session").querySelector(".stage").addEventListener("click", () => { const p = phases[curIdx]; if(p && p.open) advance(); else if(p && p.kind === "rest") skip(); else togglePause(); });
+$("muteBtn").addEventListener("click", () => { muted = !muted; if(muted) stopSpeech(); setIcons(); });
+let endArm = 0; $("endBtn").addEventListener("click", () => { const now = Date.now(); if(now - endArm < 3500){ endArm = 0; finish(false); toast("Session ended"); } else { endArm = now; toast("Tap again to end the session"); vibrate(10); } });
+$("doneBtn").addEventListener("click", () => { const txt = $("reflect").value.trim(); if(txt){ const r = store.get("dm.reflections", []); r.push({ at:Date.now(), text:txt, perceptions:drawn }); store.set("dm.reflections", r); } show("home"); renderHome(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeSheets(); if(e.key === " " && running && document.activeElement.tagName !== "TEXTAREA"){ e.preventDefault(); togglePause(); } });
+
+/* ---------- record my own voice ---------- */
+function allLines(){ return T.all.filter(t => !perceptions.includes(t.replace(/\.$/, ""))).concat(perceptions.map(p => p + ".")); }
+function narrLines(){ return T.all.filter(t => !T.perceptions.includes(t.replace(/\.$/, ""))); }
+let recFilter = "narr", recorder = null, recChunks = [], recLine = null, recTimer = null;
+function renderRec(){
+  const lines = recFilter === "narr" ? narrLines() : perceptions.map(p => p + "."), ul = $("recList"); ul.innerHTML = "";
+  const total = allLines().length, done = allLines().filter(t => mine.clips[lineId(t)]).length;
+  $("recProg").style.width = (done / total * 100) + "%"; $("recCount").textContent = `${done} / ${total}`;
+  $("recFilter").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === recFilter ? "true" : "false"));
+  lines.forEach((text, i) => {
+    const id = lineId(text), has = !!mine.clips[id], li = document.createElement("li"); li.className = has ? "done" : "";
+    li.innerHTML = `<div class="tx"></div><button class="rb play" aria-label="Play"><svg class="i" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></button><button class="rb rec" aria-label="Record"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg></button>`;
+    li.querySelector(".tx").textContent = text;
+    const play = li.querySelector(".play"), rec = li.querySelector(".rec");
+    play.style.visibility = has ? "" : "hidden";
+    play.addEventListener("click", () => { unlockAudio(); const url = URL.createObjectURL(mine.clips[id].blob); const a = new Audio(url); a.play().catch(() => {}); });
+    rec.addEventListener("click", () => recLine === text ? stopRec() : startRec(text, rec, li));
+    if(recLine === text) rec.classList.add("live");
+    ul.appendChild(li);
+  });
+}
+async function startRec(text, btn, li){
+  if(recorder) stopRec();
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true, noiseSuppression:true } });
+    const mime = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg"].find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
+    recorder = new MediaRecorder(stream, mime ? { mimeType:mime } : undefined); recChunks = []; recLine = text;
+    recorder.ondataavailable = e => { if(e.data && e.data.size) recChunks.push(e.data); };
+    recorder.onstop = async () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(recChunks, { type:recorder.mimeType || mime || "audio/mp4" }); recorder = null; recLine = null;
+      if(blob.size < 2000){ toast("Too short, try again"); renderRec(); return; }
+      const id = lineId(text); let dur = 0;
+      try{ dur = await new Promise(res => { const a = new Audio(URL.createObjectURL(blob)); a.addEventListener("loadedmetadata", () => res(isFinite(a.duration) ? a.duration : 0)); a.addEventListener("error", () => res(0)); setTimeout(() => res(0), 2500); }); }catch(e){}
+      mine.clips[id] = { blob, m:blob.type }; if(dur) mine.dur[id] = Math.round(dur * 10) / 10; urlCache.delete(id);
+      await saveMine(); renderRec(); renderVoice(); vibrate(10);
+    };
+    recorder.start(); btn.classList.add("live"); $("recHelp").textContent = "Recording… tap the red button again to stop."; vibrate(10);
+    recTimer = setTimeout(stopRec, 30000);
+  }catch(e){ toast("Microphone not available: " + (e.message || e.name)); }
+}
+function stopRec(){ clearTimeout(recTimer); if(recorder && recorder.state !== "inactive") recorder.stop(); $("recHelp").textContent = "Tap a line, read it, tap stop. Anything you haven't recorded plays in the selected narrator's voice, so you can do a few lines at a time."; }
+$("recBtn").addEventListener("click", () => { if(!navigator.mediaDevices || !window.MediaRecorder){ toast("Recording isn't supported in this browser"); return; } renderRec(); openSheet("recSheet"); });
+$("recFilter").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; recFilter = b.dataset.v; renderRec(); });
+$("closeRec").addEventListener("click", () => { stopRec(); renderVoice(); openSheet("voiceSheet"); });
+let clearArm = 0; $("recClear").addEventListener("click", async () => { const now = Date.now(); if(now - clearArm < 3500){ clearArm = 0; mine.clips = {}; mine.dur = {}; await idbDel("myVoice"); if(settings.narrator === "My voice"){ settings.narrator = ""; save(); } choosePack(); renderRec(); renderVoice(); toast("Recordings deleted"); } else { clearArm = now; toast("Tap again to delete all your recordings"); } });
+$("recExport").addEventListener("click", async () => {
+  const ids = Object.keys(mine.clips); if(!ids.length){ toast("Nothing recorded yet"); return; }
+  toast("Preparing…");
+  const b64 = blob => new Promise(res => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(blob); });
+  const clips = {}; for(const id of ids) clips[id] = { m:mine.clips[id].m, b:await b64(mine.clips[id].blob) };
+  const pack = { version:2, provider:"recorded", voice:"My voice", lines:ids.length, dur:mine.dur, clips };
+  const file = new File([JSON.stringify(pack)], "voice-mine.json", { type:"application/json" });
+  try{ if(navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], title:"Demidov voice pack" }); return; } }catch(e){ if(e.name === "AbortError") return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+});
+
+/* ---------- refresh: pull down on the home screen, or the settings button ---------- */
+const VERSION = "__VERSION__";
+$("verSub").textContent = "Build " + VERSION;
+function hardReload(){ toast("Updating…"); const u = new URL(location.href); u.searchParams.set("v", Date.now()); setTimeout(() => location.replace(u.toString()), 150); }
+$("updateBtn").addEventListener("click", hardReload);
+(function(){
+  let y0 = null, pulled = 0; const ptr = $("ptr"), home = $("home");
+  home.addEventListener("touchstart", e => { if(window.scrollY <= 0 && home.classList.contains("on")) y0 = e.touches[0].clientY; else y0 = null; }, { passive:true });
+  home.addEventListener("touchmove", e => { if(y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); if(pulled > 10){ ptr.style.transform = `translateY(${Math.min(pulled * 0.4, 70) - 48}px)`; ptr.classList.toggle("arm", pulled > 110); $("ptrT").textContent = pulled > 110 ? "Release to update" : "Pull to refresh"; } }, { passive:true });
+  const end = () => { if(y0 != null && pulled > 110) hardReload(); y0 = null; pulled = 0; ptr.style.transform = ""; ptr.classList.remove("arm"); };
+  home.addEventListener("touchend", end); home.addEventListener("touchcancel", end);
+})();
+if(location.search.includes("v=")) history.replaceState(null, "", location.pathname);
+/* automatic update check: read the build stamp from the first bytes of the live file and compare with this copy */
+let lastCheck = 0;
+async function checkUpdate(){
+  if(location.protocol === "file:" || running) return;
+  const now = Date.now(); if(now - lastCheck < 300000) return; lastCheck = now;
+  try{
+    const r = await fetch(location.pathname + "?c=" + now, { headers:{ Range:"bytes=0-1500" }, cache:"no-store" });
+    if(!r.ok) return;
+    const m = (await r.text()).match(/name="build" content="([^"]+)"/); if(!m) return;
+    const live = m[1]; if(live === VERSION) return;
+    if(store.get("dm.reloadedFor", "") === live) return;   /* already tried once for this build; never loop */
+    store.set("dm.reloadedFor", live); toast("New version found, updating…"); setTimeout(hardReload, 900);
+  }catch(e){}
+}
+setTimeout(checkUpdate, 1500);
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") checkUpdate(); });
+
+/* offline: a service worker keeps the app shell and fonts cached once it has loaded over https */
+if("serviceWorker" in navigator && location.protocol === "https:" && !/claude\.ai$/.test(location.hostname)){ navigator.serviceWorker.register("sw.js").catch(() => {}); }
+function netState(){ document.body.classList.toggle("offline", navigator.onLine === false); renderVoice(); }
+window.addEventListener("online", netState); window.addEventListener("offline", netState);
+
+applyTheme(); setIcons(); renderHome(); loadPack(); netState();
+})();
+</script>
+</body>
+</html>
