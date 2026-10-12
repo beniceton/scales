@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F4F8">
+<title>Demidov Scales · Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F8;--card:#fff;--card2:#F6F7FA;--line:#EAECF1;--ink:#111318;--ink2:#687084;--ink3:#A3A9B6;--acc:#6C8CFF;--red:#D33021;--mint:#45C4A1;--btn:#111318;--btn-ink:#fff;--shadow:0 .6rem 1.8rem rgba(20,30,60,.08);color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1015;--card:#171A21;--card2:#1E222B;--line:#232833;--ink:#F2F3F7;--ink2:#9AA1AE;--ink3:#5E6573;--btn:#F2F3F7;--btn-ink:#0E1015;--shadow:0 .6rem 1.8rem rgba(0,0,0,.4);color-scheme:dark}}
+*{box-sizing:border-box}html{font-size:clamp(14px,2.1vw + 8px,17px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Outfit",system-ui,sans-serif;line-height:1.45;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:46rem;margin:0 auto;padding:1rem clamp(16px,5vw,24px) 6rem}
+h1{font-weight:600;font-size:1.5rem;margin:.6rem 0 0}h1 small{color:var(--ink2);font-weight:400;font-size:.9rem;margin-left:.5rem}
+h2{font-weight:600;font-size:1.05rem;margin:1.4rem 0 .5rem}
+p.help{color:var(--ink2);font-size:.88rem;margin:.2rem 0 .8rem}
+.card{background:var(--card);border-radius:1.2rem;box-shadow:var(--shadow);padding:.9rem 1rem}
+.status{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;font-size:.88rem}
+.dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--ink3);flex:none}.dot.ok{background:var(--mint)}.dot.run{background:var(--acc);animation:p 1s infinite alternate}.dot.bad{background:var(--red)}
+@keyframes p{to{opacity:.4}}
+.status a{color:var(--acc);font-weight:600;text-decoration:none}
+label{display:block;font-size:.8rem;color:var(--ink2);margin:.6rem 0 .25rem}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:.8rem;background:var(--card2);color:var(--ink);padding:.6rem .75rem;font:inherit;font-size:.92rem}
+textarea{resize:vertical;min-height:4.2rem;line-height:1.45}
+.row{display:flex;gap:.5rem;align-items:center}.row input{flex:1}
+.row .t{width:4.5rem;flex:none;text-align:center}
+.line{display:grid;grid-template-columns:4rem 1fr auto;gap:.5rem;align-items:start;padding:.5rem 0;border-top:1px solid var(--line)}
+.line:first-child{border-top:0}
+.line .n{color:var(--ink3);font-size:.75rem;padding-top:.7rem;font-variant-numeric:tabular-nums}
+.x{border:0;background:var(--card2);color:var(--ink2);width:2rem;height:2rem;border-radius:50%;cursor:pointer;margin-top:.35rem}
+.narr{display:grid;grid-template-columns:1fr 1.6fr auto auto;gap:.5rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line)}.narr:first-child{border-top:0}
+.narr input[type=radio]{width:auto}
+button.pill{border:0;background:var(--card);box-shadow:var(--shadow);border-radius:999px;height:2.5rem;padding:0 1.1rem;font:inherit;font-weight:600;font-size:.9rem;color:var(--ink);cursor:pointer}
+button.pill.primary{background:var(--btn);color:var(--btn-ink)}
+button.pill:disabled{opacity:.5;cursor:default}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);box-shadow:0 -.5rem 1.8rem rgba(20,30,60,.1);padding:.8rem clamp(16px,5vw,24px) calc(.8rem + env(safe-area-inset-bottom));display:flex;gap:.6rem;align-items:center;justify-content:space-between}
+.bar .msg{font-size:.84rem;color:var(--ink2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cost{font-size:.8rem;color:var(--ink2)}
+.toast{position:fixed;left:50%;bottom:5.5rem;transform:translateX(-50%);background:var(--btn);color:var(--btn-ink);padding:.7rem 1.1rem;border-radius:999px;font-size:.88rem;font-weight:600;opacity:0;transition:.3s;pointer-events:none}
+.toast.on{opacity:1}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Studio <small>Demidov Scales</small></h1>
+  <p class="help">Edit the script, the perceptions and the narrators, then Publish. The repo generates any new narration, rebuilds the app and releases it. Phones pick it up on their next launch.</p>
+
+  <div class="card" id="auth">
+    <label for="token">GitHub token</label>
+    <input id="token" type="password" placeholder="github_pat_…" autocomplete="off">
+    <p class="help" style="margin-bottom:.4rem">A fine-grained personal access token for this repository with <b>Contents: read and write</b> and <b>Actions: read and write</b>. It's kept only on this device.</p>
+    <div class="row"><input id="repo" placeholder="owner/repo"><button class="pill primary" id="connect">Connect</button></div>
+  </div>
+
+  <div id="editor" class="hide">
+    <div class="card status"><span class="dot" id="dot"></span><span id="statusT">Checking…</span><a id="runsLink" target="_blank" rel="noopener">Builds</a><a id="appLink" target="_blank" rel="noopener">Open app</a><button class="pill" id="runNow" style="margin-left:auto">Build now</button></div>
+
+    <h2>Narrators</h2>
+    <p class="help">ElevenLabs voice IDs. The default is the voice everyone hears unless they change it. A new narrator means a full set of lines for that voice.</p>
+    <div class="card" id="narrs"></div>
+    <button class="pill" id="addNarr" style="margin-top:.6rem">Add narrator</button>
+
+    <h2>Breathing</h2>
+    <p class="help">Seconds from the start, then the line. Keep gaps of 20 seconds or more.</p>
+    <div class="card" id="breath"></div>
+
+    <h2>Scales</h2>
+    <label for="intro">Intro, before the first scale (timed mode only)</label>
+    <textarea id="intro"></textarea>
+    <label>Release lines, played when you let go (Release guidance)</label>
+    <div class="card" id="release"></div>
+    <label for="lead">Timed-mode lead-in to the release</label>
+    <textarea id="lead"></textarea>
+
+    <h2>Closings</h2>
+    <label for="endBreath">After breathing only</label><textarea id="endBreath"></textarea>
+    <label for="endScales">After scales</label><textarea id="endScales"></textarea>
+
+    <h2>Supplementary exercises</h2>
+    <p class="help">Lump of Faith, Three Minutes of Freedom and ANA Breath. The app's timings and structure stay fixed; only the spoken lines are edited here, so keep each line's meaning in place.</p>
+    <div id="exercises"></div>
+
+    <h2>Themes <span class="cost" id="percCount"></span></h2>
+    <p class="help">One per line, no full stop. Andrei's rule: nothing extraordinary or psychologically heightened.</p>
+    <label for="sensations">Physical sensations</label>
+    <textarea id="sensations" style="min-height:30vh"></textarea>
+    <label for="places">Places and events</label>
+    <textarea id="places" style="min-height:30vh"></textarea>
+  </div>
+</div>
+
+<div class="bar" id="bar">
+  <span class="msg" id="msg">Connect to begin</span>
+  <button class="pill" id="reload">Reload</button>
+  <button class="pill primary" id="publish" disabled>Publish</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const toast = m => { const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2600); };
+const cfg = { token: localStorage.getItem("studio.token") || "", repo: localStorage.getItem("studio.repo") || guessRepo() };
+function guessRepo(){ const m = location.hostname.match(/^([^.]+)\.github\.io$/); const seg = location.pathname.split("/").filter(Boolean)[0]; return m && seg ? `${m[1]}/${seg}` : ""; }
+$("token").value = cfg.token; $("repo").value = cfg.repo;
+
+let script = null, sha = null, original = "";
+const api = async (path, opts = {}) => {
+  const r = await fetch(`https://api.github.com/repos/${cfg.repo}${path}`, Object.assign({ headers: { Authorization: `Bearer ${cfg.token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" } }, opts));
+  if(!r.ok){ const t = await r.text(); throw new Error(`${r.status} ${t.slice(0, 160)}`); }
+  return r.status === 204 ? null : r.json();
+};
+const b64e = s => btoa(unescape(encodeURIComponent(s))), b64d = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
+function lineId(text){ let h = 5381; for(const ch of text){ h = ((Math.imul(h, 33) ^ ch.codePointAt(0)) >>> 0); } return h.toString(16).padStart(8, "0"); }
+function allLines(s){ return s.breath.map(c => c.text).concat([s.intro, s.timed_release_lead], s.release, [s.end_breath, s.end_scales], (s.sensations || []).concat(s.places || [], s.perceptions || []).map(p => p + "."), Object.values(s.exercises || {}).flatMap(e => e.lines)); }
+
+async function connect(){
+  cfg.token = $("token").value.trim(); cfg.repo = $("repo").value.trim();
+  if(!cfg.token || !cfg.repo){ toast("Token and owner/repo needed"); return; }
+  localStorage.setItem("studio.token", cfg.token); localStorage.setItem("studio.repo", cfg.repo);
+  try{
+    const f = await api("/contents/src/script.json"); sha = f.sha; original = b64d(f.content); script = JSON.parse(original);
+    $("auth").classList.add("hide"); $("editor").classList.remove("hide"); $("publish").disabled = false;
+    $("runsLink").href = `https://github.com/${cfg.repo}/actions`; $("appLink").href = `https://${cfg.repo.split("/")[0]}.github.io/${cfg.repo.split("/")[1]}/`;
+    render(); status();
+  }catch(e){ toast("Couldn't connect: " + e.message); }
+}
+function render(){
+  const nb = $("narrs"); nb.innerHTML = "";
+  script.narrators.forEach((n, i) => {
+    const d = document.createElement("div"); d.className = "narr";
+    d.innerHTML = `<input placeholder="Name"><input placeholder="ElevenLabs voice id"><label style="margin:0;display:flex;gap:.3rem;align-items:center"><input type="radio" name="def"> default</label><button class="x" title="Remove">×</button>`;
+    const [name, vid, radio] = d.querySelectorAll("input"); name.value = n.name; vid.value = n.voice_id; radio.checked = !!n.default;
+    name.oninput = () => n.name = name.value.trim(); vid.oninput = () => n.voice_id = vid.value.trim();
+    radio.onchange = () => { script.narrators.forEach(x => delete x.default); n.default = true; };
+    d.querySelector(".x").onclick = () => { script.narrators.splice(i, 1); render(); };
+    nb.appendChild(d);
+  });
+  const bb = $("breath"); bb.innerHTML = "";
+  script.breath.forEach((c, i) => { const d = document.createElement("div"); d.className = "line"; d.innerHTML = `<input class="t" type="number" min="0" max="299"><textarea rows="2"></textarea><button class="x">×</button>`; const [t] = d.querySelectorAll("input"); const ta = d.querySelector("textarea"); t.value = c.t; ta.value = c.text; t.oninput = () => c.t = +t.value; ta.oninput = () => c.text = ta.value.trim(); d.querySelector(".x").onclick = () => { script.breath.splice(i, 1); render(); }; bb.appendChild(d); });
+  const add = document.createElement("button"); add.className = "pill"; add.textContent = "Add breathing line"; add.style.marginTop = ".5rem"; add.onclick = () => { script.breath.push({ t: (script.breath.at(-1)?.t || 0) + 25, text: "" }); render(); }; bb.appendChild(add);
+  const rb = $("release"); rb.innerHTML = "";
+  script.release.forEach((x, i) => { const d = document.createElement("div"); d.className = "line"; d.innerHTML = `<span class="n">${i + 1}</span><textarea rows="2"></textarea><button class="x">×</button>`; const ta = d.querySelector("textarea"); ta.value = x; ta.oninput = () => script.release[i] = ta.value.trim(); d.querySelector(".x").onclick = () => { script.release.splice(i, 1); render(); }; rb.appendChild(d); });
+  const add2 = document.createElement("button"); add2.className = "pill"; add2.textContent = "Add release line"; add2.style.marginTop = ".5rem"; add2.onclick = () => { script.release.push(""); render(); }; rb.appendChild(add2);
+  const eb = $("exercises"); eb.innerHTML = "";
+  Object.entries(script.exercises || {}).forEach(([k, ex]) => {
+    const card = document.createElement("div"); card.className = "card"; card.style.marginBottom = ".6rem";
+    const h = document.createElement("label"); h.textContent = ex.title; h.style.fontWeight = "600"; h.style.color = "var(--ink)"; card.appendChild(h);
+    ex.lines.forEach((x, i) => { const d = document.createElement("div"); d.className = "line"; d.innerHTML = `<span class="n">${i + 1}</span><textarea rows="2"></textarea><span></span>`; const ta = d.querySelector("textarea"); ta.value = x; ta.oninput = () => ex.lines[i] = ta.value.trim(); card.appendChild(d); });
+    eb.appendChild(card);
+  });
+  $("intro").value = script.intro; $("lead").value = script.timed_release_lead; $("endBreath").value = script.end_breath; $("endScales").value = script.end_scales;
+  $("sensations").value = (script.sensations || []).join("\n"); $("places").value = (script.places || []).join("\n"); $("percCount").textContent = `· ${(script.sensations || []).length + (script.places || []).length}`;
+}
+["intro", "lead", "endBreath", "endScales"].forEach(id => $(id).addEventListener("input", () => { script[{ intro: "intro", lead: "timed_release_lead", endBreath: "end_breath", endScales: "end_scales" }[id]] = $(id).value.trim(); }));
+["sensations", "places"].forEach(id => $(id).addEventListener("input", () => { script[id] = $(id).value.split("\n").map(l => l.trim().replace(/\.$/, "")).filter(Boolean); $("percCount").textContent = `· ${(script.sensations || []).length + (script.places || []).length}`; }));
+$("addNarr").addEventListener("click", () => { script.narrators.push({ name: "", voice_id: "" }); render(); });
+
+async function status(){
+  try{
+    const r = await api("/actions/runs?per_page=1"); const run = r.workflow_runs && r.workflow_runs[0];
+    const dot = $("dot"); dot.className = "dot";
+    if(!run){ $("statusT").textContent = "No builds yet"; return; }
+    const when = new Date(run.updated_at).toLocaleString("en-GB", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" });
+    if(run.status !== "completed"){ dot.classList.add("run"); $("statusT").textContent = `Building… started ${when}`; setTimeout(status, 15000); }
+    else if(run.conclusion === "success"){ dot.classList.add("ok"); $("statusT").textContent = `Last build succeeded · ${when}`; }
+    else { dot.classList.add("bad"); $("statusT").textContent = `Last build ${run.conclusion} · ${when}`; }
+  }catch(e){ $("statusT").textContent = "Build status unavailable (token may lack Actions access)"; }
+}
+function changes(){
+  const before = new Set(allLines(JSON.parse(original)).map(lineId)), now = allLines(script);
+  const newLines = now.filter(t => !before.has(lineId(t))).length;
+  return { newLines, chars: now.filter(t => !before.has(lineId(t))).reduce((a, t) => a + t.length, 0) };
+}
+async function publish(){
+  const errs = [];
+  if(!script.narrators.length || script.narrators.some(n => !n.name || !n.voice_id)) errs.push("every narrator needs a name and voice id");
+  if(!script.narrators.some(n => n.default)) script.narrators[0].default = true;
+  if(((script.sensations || []).length + (script.places || []).length) < 5) errs.push("keep at least five themes");
+  if(script.breath.some(c => !c.text) || script.release.some(x => !x)) errs.push("remove empty lines");
+  if(errs.length){ toast(errs[0]); return; }
+  const body = JSON.stringify(script, null, 1) + "\n";
+  if(body.trim() === original.trim()){ toast("No changes to publish"); return; }
+  const c = changes(); const voices = script.narrators.length;
+  const msg = c.newLines ? `${c.newLines} new line${c.newLines > 1 ? "s" : ""} × ${voices} narrator${voices > 1 ? "s" : ""}, about ${(c.chars * voices).toLocaleString()} ElevenLabs characters. Publish?` : "Publish? (no new narration needed)";
+  if(!confirm(msg)) return;
+  $("publish").disabled = true; $("msg").textContent = "Publishing…";
+  try{
+    const r = await api("/contents/src/script.json", { method: "PUT", body: JSON.stringify({ message: "Studio: update script", content: b64e(body), sha }) });
+    sha = r.content.sha; original = body; $("msg").textContent = "Published. Building…"; toast("Published"); setTimeout(status, 4000);
+  }catch(e){ toast("Publish failed: " + e.message); $("msg").textContent = "Publish failed"; }
+  $("publish").disabled = false;
+}
+$("connect").addEventListener("click", connect);
+$("publish").addEventListener("click", publish);
+$("reload").addEventListener("click", () => { if(!script || confirm("Discard unpublished edits and reload from the repo?")) connect(); });
+$("runNow").addEventListener("click", async () => { try{ await api("/actions/workflows/build.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) }); toast("Build started"); setTimeout(status, 4000); }catch(e){ toast("Couldn't start: " + e.message); } });
+if(cfg.token && cfg.repo) connect();
+})();
+</script>
+</body>
+</html>
