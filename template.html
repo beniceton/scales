@@ -26,7 +26,7 @@
   --shadow:0 .6rem 1.8rem rgba(20,30,60,.08); --shadow2:0 .15rem .6rem rgba(20,30,60,.06);
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
   --gut:clamp(16px,5vw,22px);
-  --tabs:4rem;
+  --tabs:3.6rem;
   color-scheme:light;
 }
 :root[data-theme="dark"]{
@@ -37,7 +37,7 @@
   --shadow:0 .6rem 1.8rem rgba(0,0,0,.4); --shadow2:0 .15rem .6rem rgba(0,0,0,.3);
   color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]):not([data-theme="dark"]){
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]):not([data-theme="dark"]):not([data-theme="demidov"]){
   --bg:#0E1015; --card:#171A21; --card2:#1E222B; --line:#232833; --line2:#2E3440;
   --ink:#F2F3F7; --ink2:#9AA1AE; --ink3:#5E6573;
   --acc:#8AA4FF; --acc2:#7E96F5; --tint:#283256; --lav:#1E253F; --lav2:#252D4C; --mint:#45C4A1;
@@ -117,7 +117,7 @@
 :root[data-theme="demidov"][data-variant="light"] .tab[aria-pressed="true"]{color:#000}
 :root[data-theme="demidov"][data-variant="light"] .wash{background:radial-gradient(60% 40% at 50% 26%,#FBE3E0 0%,transparent 70%)}
 :root[data-theme="demidov"][data-variant="light"] .seg button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .chips button[aria-pressed="true"],:root[data-theme="demidov"][data-variant="light"] .pill.primary{background:#000;color:#fff}
-:root[data-theme="demidov"][data-variant="light"] .core span{color:#000}
+:root[data-theme="demidov"][data-variant="light"] .corelbl span{color:#000}
 :root[data-theme="demidov"][data-variant="light"] textarea{background:#fff}
 .recbar{display:flex;align-items:center;gap:.75rem;margin:.25rem 0 .6rem}
 .recprog{flex:1;height:.4rem;border-radius:.2rem;background:var(--line2);overflow:hidden}
@@ -142,7 +142,7 @@
 :root[data-theme="demidov"] .ring{display:none}
 :root[data-theme="demidov"] .core{background:transparent;border:0;box-shadow:none}
 :root[data-theme="demidov"] .wave{display:none}
-:root[data-theme="demidov"] .core span{font-family:var(--head);font-weight:300;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
+:root[data-theme="demidov"] .corelbl span{font-family:var(--head);font-weight:300;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
 :root[data-theme="demidov"] .art .a,:root[data-theme="demidov"] .art .b{display:none}
 :root[data-theme="demidov"] .art{right:.5rem;top:.5rem;width:4.6rem;height:4.6rem;opacity:1}
 :root[data-theme="demidov"] .hero h2,:root[data-theme="demidov"] .hero .m{max-width:calc(100% - 5.2rem)}
@@ -168,7 +168,7 @@ svg{display:block}
 .app{max-width:30rem;margin:0 auto;position:relative}
 .screen{display:none;flex-direction:column;gap:var(--gap,.75rem);padding:calc(var(--sat) + .5rem) var(--gut) 1rem;min-height:100vh;min-height:100dvh}
 .screen.on{display:flex;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
-.screen.tabbed{padding-bottom:calc(var(--tabs) + var(--sab) + .9rem)}
+.screen.tabbed{padding-bottom:calc(var(--tabs) + var(--sab) + .6rem)}
 @keyframes rise{from{opacity:0;transform:translateY(.5rem)}to{opacity:1;transform:none}}
 .card{background:var(--card);border-radius:1.4rem;box-shadow:var(--shadow)}
 .top{display:flex;justify-content:space-between;align-items:center;height:2.75rem;flex:none}
@@ -178,7 +178,7 @@ svg{display:block}
 
 /* ================= home ================= */
 .greet{flex:none}
-.greet .k{color:var(--ink2);font-size:.85rem;line-height:1.3}
+.greet .k{color:var(--ink2);font-size:.8rem;line-height:1.25}
 .greet h1{font-weight:600;font-size:1.4rem;line-height:1.2;margin:.1rem 0 0;letter-spacing:-.01em}
 .modes{display:flex;gap:.25rem;flex:none}
 .modes button{color:var(--ink2);border-radius:.9rem;height:2.25rem;padding:0 1rem;font-weight:500;font-size:.95rem;transition:background .2s,color .2s}
@@ -186,7 +186,7 @@ svg{display:block}
 .hero{flex:none;border-radius:1.3rem;padding:.95rem 1.1rem;background:linear-gradient(135deg,var(--lav),var(--lav2));position:relative;overflow:hidden}
 .hero h2{font-weight:600;font-size:1.15rem;line-height:1.25;margin:0;max-width:calc(100% - 5.5rem);position:relative;z-index:1}
 .hero .m{color:var(--ink2);font-size:.88rem;margin-top:.25rem;position:relative;z-index:1;max-width:calc(100% - 5.5rem)}
-.start{margin-top:.7rem;border-radius:999px;background:var(--acc);color:#fff;height:2.5rem;padding:0 1.25rem 0 .85rem;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.6rem;box-shadow:0 .5rem 1.2rem rgba(108,140,255,.32);position:relative;z-index:1}
+.start{margin-top:.6rem;border-radius:999px;background:var(--acc);color:#fff;height:2.35rem;padding:0 1.25rem 0 .85rem;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.6rem;box-shadow:0 .5rem 1.2rem rgba(108,140,255,.32);position:relative;z-index:1}
 .start i{width:1.4rem;height:1.4rem;border-radius:50%;background:#fff;display:grid;place-items:center}
 .start i svg{width:.55rem;height:.55rem;fill:var(--acc)}
 .art{position:absolute;right:-2.4rem;top:-2.4rem;width:9.5rem;height:9.5rem;pointer-events:none;opacity:.7}
@@ -196,15 +196,15 @@ svg{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .sec{display:flex;justify-content:space-between;align-items:baseline;flex:none;margin-bottom:-.35rem}
 .supp{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;flex:none}
-.supp button{position:relative;background:var(--card);border-radius:1.2rem;box-shadow:var(--shadow);padding:.7rem .8rem;text-align:left;min-width:0;display:grid;grid-template-columns:1.9rem 1fr;grid-template-rows:auto auto;column-gap:.6rem;row-gap:.1rem;align-items:center;overflow:hidden}
-.supp .ic{width:1.9rem;height:1.9rem;border-radius:.65rem;background:var(--tint);color:var(--acc);display:grid;place-items:center;grid-row:1/3}
-.supp .ic svg{width:1.05rem;height:1.05rem}
-.supp b{font-weight:600;font-size:.9rem;line-height:1.15;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.supp small{color:var(--ink2);font-size:.7rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.supp .w{display:flex;gap:.25rem;align-items:center;grid-column:2;margin-top:.15rem}
+.supp button{background:var(--card);border-radius:1.1rem;box-shadow:var(--shadow);padding:.6rem .7rem .55rem;text-align:left;min-width:0;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto auto;align-items:center;row-gap:.15rem;overflow:hidden}
+.supp .ic{width:1.6rem;height:1.6rem;border-radius:.5rem;background:var(--tint);color:var(--acc);display:grid;place-items:center;grid-row:1;grid-column:1}
+.supp .ic svg{width:.9rem;height:.9rem}
+.supp .w{display:flex;gap:.22rem;align-items:center;grid-row:1;grid-column:2;justify-self:end}
 .supp .w i{width:.45rem;height:.45rem;border-radius:50%;background:var(--line2);display:block}
 .supp .w i.d{background:var(--mint)}
-.supp em{font-style:normal;color:var(--ink3);font-size:.66rem;margin-left:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.supp b{font-weight:600;font-size:.88rem;line-height:1.15;grid-row:2;grid-column:1/3;margin-top:.2rem;white-space:normal}
+.supp small{color:var(--ink2);font-size:.72rem;line-height:1.2;grid-row:3;grid-column:1/3}
+.supp em{display:none}
 :root[data-theme="demidov"] .supp .ic{background:#1A1A1A;color:var(--acc)}
 :root[data-theme="demidov"] .supp b{font-family:var(--head);text-transform:uppercase;letter-spacing:.05em;font-weight:500;font-size:.78rem}
 :root[data-theme="demidov"][data-variant="light"] .supp .ic{background:#F0F0F0}
@@ -213,7 +213,7 @@ svg{display:block}
 .week{flex:none;padding:.85rem .9rem .8rem}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem}
 .day{display:flex;flex-direction:column;align-items:center;gap:.3rem}
-.day .c{width:2.15rem;height:2.15rem;border-radius:50%;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line)}
+.day .c{width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line)}
 .day .c svg{width:1rem;height:1rem;stroke:#fff;stroke-width:2.6;opacity:0;transform:scale(.6);transition:opacity .3s,transform .3s}
 .day.done .c{background:var(--mint);border-color:transparent}
 .day.done .c svg{opacity:1;transform:none}
@@ -228,12 +228,12 @@ svg{display:block}
 .stats div+div{border-left:1px solid var(--line)}
 .stats b{display:block;font-weight:600;font-size:1.25rem;line-height:1.1;font-variant-numeric:tabular-nums}
 .stats span{color:var(--ink2);font-size:.74rem}
-.foot{text-align:center;color:var(--ink3);font-size:.74rem;margin-top:auto;flex:none}
+.foot{text-align:center;color:var(--ink3);font-size:.7rem;margin-top:auto;flex:none;line-height:1.2}
 
 /* ================= tab bar ================= */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;max-width:30rem;margin:0 auto;background:var(--card);border-radius:1.3rem 1.3rem 0 0;box-shadow:0 -.5rem 1.8rem rgba(20,30,60,.08);height:calc(var(--tabs) + var(--sab));padding:0 1rem var(--sab);display:flex;justify-content:space-around;align-items:center;transition:transform .35s}
 .tabs.hide{transform:translateY(110%)}
-.tab{color:var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;width:3.9rem;height:3.4rem;font-size:.66rem;font-weight:600;position:relative}
+.tab{color:var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;width:3.9rem;height:3.1rem;font-size:.66rem;font-weight:600;position:relative}
 .tab svg{width:1.35rem;height:1.35rem}
 .tab[aria-pressed="true"]{color:var(--ink)}
 .tab[aria-pressed="true"]::after{content:"";position:absolute;bottom:.15rem;width:.25rem;height:.25rem;border-radius:50%;background:var(--ink)}
@@ -261,14 +261,23 @@ svg{display:block}
 .hist li span{color:var(--ink2);font-size:.8rem;text-align:right;max-width:58%}
 
 /* ================= guide ================= */
-#guide{gap:.75rem}
-.gtext{padding:1rem 1.1rem}
-.gtext h4{margin:.2rem 0 .35rem;font-weight:600;font-size:1rem}
-.gtext h4+h4{margin-top:.6rem}
-.gtext p{margin:0 0 .6rem;font-size:.9rem;line-height:1.5;color:var(--ink)}
-.gtext p.src{color:var(--ink2);font-size:.8rem}
-.gtext p.how{color:var(--ink2);font-size:.84rem;border-top:1px solid var(--line);padding-top:.6rem;margin-top:.2rem}
-:root[data-theme="demidov"] .gtext h4{font-family:var(--head);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:.85rem}
+#guide{gap:.85rem}
+.gintro{color:var(--ink2);font-size:.88rem;line-height:1.5;margin:0;flex:none}
+.gtext{padding:1.1rem 1.15rem 1rem}
+.gtext h4{margin:0 0 .3rem;font-weight:600;font-size:1.1rem;line-height:1.25}
+.gtext h4+h4,.gtext blockquote+h4,.gtext ol+h4{margin-top:1.1rem}
+.gtext p{margin:0 0 .55rem;font-size:.92rem;line-height:1.55;color:var(--ink)}
+.gtext p.src{color:var(--ink2);font-size:.8rem;margin:0 0 .8rem}
+.gtext blockquote{margin:0 0 .75rem;padding:.1rem 0 .1rem .9rem;border-left:3px solid var(--line2)}
+.gtext blockquote p:last-child{margin-bottom:0}
+.gtext ol.steps{margin:.2rem 0 .6rem;padding-left:1.35rem}
+.gtext ol.steps li{margin:0 0 .55rem;font-size:.92rem;line-height:1.55;padding-left:.15rem}
+.gtext ol.steps li::marker{color:var(--acc);font-weight:600}
+.gtext ul.how{margin:.75rem 0 0;padding:.75rem 0 0 1.1rem;border-top:1px solid var(--line);list-style:none}
+.gtext ul.how li{position:relative;color:var(--ink2);font-size:.86rem;line-height:1.5;margin:0 0 .35rem}
+.gtext ul.how li::before{content:"";position:absolute;left:-1.1rem;top:.55rem;width:.45rem;height:.45rem;border-radius:50%;background:var(--acc)}
+:root[data-theme="demidov"] .gtext h4{font-family:var(--head);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:.9rem}
+:root[data-theme="demidov"] .gtext blockquote{border-left-color:var(--acc)}
 
 /* ================= session ================= */
 #session{--gap:0}
@@ -279,15 +288,16 @@ body.live .wash{opacity:.5}
 .ring{position:absolute;inset:0;border-radius:50%;transform:scale(.7);will-change:transform;background:var(--tint);opacity:.35}
 .ring.r2{inset:9%;opacity:.45}.ring.r3{inset:18%;opacity:.55}
 .core{position:absolute;inset:18%;border-radius:50%;display:grid;place-items:center;text-align:center;will-change:transform;overflow:hidden;background:radial-gradient(circle at 50% 50%,var(--acc2) 0%,var(--acc) 100%);box-shadow:0 1.4rem 3rem rgba(108,140,255,.28)}
-.core span{position:relative;z-index:2;color:#fff;font-weight:600;font-size:1.05rem;opacity:0;transition:opacity .5s}
-.core span.on{opacity:1}
+.corelbl{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:3}
+.corelbl span{color:#fff;font-weight:600;font-size:1.05rem;opacity:0;transition:opacity .5s}
+.corelbl span.on{opacity:1}
 .wave{position:absolute;left:-10%;right:-10%;top:50%;height:36%;transform:translateY(-50%);opacity:.4;z-index:1}
 .wave path{fill:none;stroke:#fff;stroke-width:.7;stroke-linecap:round}
 .core.bloom{animation:bloom 1s ease-out}
 @keyframes bloom{0%{filter:brightness(1)}25%{filter:brightness(1.18)}100%{filter:brightness(1)}}
 .pulse{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.perc{font-weight:600;font-size:1.45rem;line-height:1.25;text-align:center;margin-top:1.2rem;max-width:18rem;height:3.7rem;display:flex;align-items:center;justify-content:center;letter-spacing:-.01em;opacity:0;transform:translateY(.5rem);filter:blur(5px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1),filter .9s ease}
-.perc.on{opacity:1;transform:none;filter:blur(0)}
+.perc{font-weight:600;font-size:1.45rem;line-height:1.25;text-align:center;margin-top:1.2rem;max-width:18rem;height:3.7rem;display:flex;align-items:center;justify-content:center;letter-spacing:-.01em;opacity:0;transform:translateY(.5rem);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.perc.on{opacity:1;transform:none}
 .prompt{color:var(--ink2);text-align:center;max-width:18rem;margin-top:.4rem;font-size:.88rem;line-height:1.4;height:3.8rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s}
 .prompt.on{opacity:1}
 .vlbl{color:var(--ink3);font-size:.74rem;margin-top:.2rem}
@@ -425,30 +435,78 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
 <!-- ================= GUIDE ================= -->
 <section class="screen tabbed" id="guide">
   <div class="top"><span class="title" style="margin:0 auto">Guide</span></div>
+  <p class="gintro">The practice as taught at Demidov Studio London, in their words. How the app follows each one is marked in colour.</p>
+
   <div class="card gtext">
     <h4>Scales</h4>
-    <p class="src">Sensations, times, places and events. From the Demidov Studio London notes.</p>
-    <p>"Make several lists. Each list should contain 50 or more themes. One of the lists may consist of themes connected with physical sensations: cold… hot… warm bathtub, sitting on a wet surface, etc. Another list may consist of themes connected with more complex circumstances, such as events and places: someone just knocked on my window… ship cabin… prison cell… I am expecting a phone call… I am expecting someone's arrival… etc. Do not choose any "extraordinary", psychologically heightened themes."</p>
-    <p>"Take one of the theme lists and, since it is important to receive an unexpected impression, put your finger arbitrarily onto one of the themes. Read the theme you just picked. Let's say you picked "mosquito bites": immediately, without any thinking, yield to spontaneous sensations, movements, thought, to everything that comes to you as a reaction to the words you read."</p>
-    <p>"Don't rush to move to the next theme until you've exhausted the previous theme. Rest for a few minutes, then take another theme. No need to exercise many themes in one session, so as not to get accustomed to approximating the truth."</p>
-    <p class="how">In this app: the chime is the finger landing on the list. The theme is read once, then silence. Stay with it until it has faded, tap, and the next theme comes with the next chime. A rest between themes can be set in Settings.</p>
+    <p class="src">Sensations, times, places and events</p>
+    <blockquote>
+      <p>Make several lists. Each list should contain 50 or more themes.</p>
+      <p>One list may consist of themes connected with physical sensations: cold, hot, a warm bathtub, sitting on a wet surface.</p>
+      <p>Another may consist of more complex circumstances, events and places: someone just knocked on my window, a ship cabin, a prison cell, I am expecting a phone call, I am expecting someone's arrival.</p>
+      <p>Do not choose any extraordinary, psychologically heightened themes.</p>
+    </blockquote>
+    <blockquote>
+      <p>Since it is important to receive an unexpected impression, put your finger arbitrarily onto one of the themes and read it.</p>
+      <p>Immediately, without any thinking, yield to spontaneous sensations, movements, thought: to everything that comes to you as a reaction to the words you read.</p>
+    </blockquote>
+    <blockquote>
+      <p>Don't rush to move to the next theme until you've exhausted the previous one. Rest for a few minutes, then take another.</p>
+      <p>No need to exercise many themes in one session, so as not to get accustomed to approximating the truth.</p>
+    </blockquote>
+    <ul class="how">
+      <li>The chime is the finger landing on the list. The theme is read once, then silence.</li>
+      <li>Stay with it until it has faded. Tap, and the next theme comes with the next chime.</li>
+      <li>Draw from both lists or one, and add a rest between themes, in Settings.</li>
+    </ul>
   </div>
+
   <div class="card gtext">
     <h4>Lump of Faith</h4>
-    <p>"I sit calmly and make sure I am in a calm place. Then I think of something, I ask myself 'can I do that', and then I immediately follow through and do it. I return to my original place and sense the glow of having succeeded. I rest for a moment, and think of something else. Don't do too many of these. Probably four or five maximum."</p>
+    <blockquote>
+      <p>I sit calmly and make sure I am in a calm place.</p>
+      <p>Then I think of something, I ask myself "can I do that", and then I immediately follow through and do it.</p>
+      <p>I return to my original place and sense the glow of having succeeded. I rest for a moment, and think of something else.</p>
+      <p>Don't do too many of these. Probably four or five maximum.</p>
+    </blockquote>
     <h4>Three Minutes of Freedom</h4>
-    <p>"For the next three minutes, I will give myself complete freedom to think what I feel like thinking, feel what I feel like feeling and do what I feel like doing. This could be done at the end of any of these exercises."</p>
+    <blockquote>
+      <p>For the next three minutes, I will give myself complete freedom to think what I feel like thinking, feel what I feel like feeling and do what I feel like doing.</p>
+      <p>This could be done at the end of any of these exercises.</p>
+    </blockquote>
+    <ul class="how">
+      <li>Each round is spoken: think of something, can I do that, follow through, the glow, rest. Tap when you've done it.</li>
+      <li>Three minutes of freedom follows automatically. Four rounds by default; three to five in Settings.</li>
+    </ul>
   </div>
+
   <div class="card gtext">
     <h4>ANA Breath Meditation</h4>
-    <p class="src">A Sufi-inspired Demidov practice for sensing the "I Am" and for singularity.</p>
-    <p>Find a quiet space to sit or lie down comfortably. Sense the asana of your position. Allow your body to settle and your breath to soften. Become aware of your natural breathing; no need to control it, just notice.</p>
-    <p>On the inhale, say either internally, or as a whisper or quietly voiced, "Ana" (stress on the second syllable: An-aa). Let it settle more and more in your centre. On the exhale, repeat softly: "Ana". Continue this rhythm. Let the word gently mirror your existence, not as a thought but as a sensation. You are not affirming anything. You are simply being.</p>
-    <p>After a few minutes, shift to: inhale "Ana", exhale "Hu" (The One, divine presence). This rhythm becomes a living echo of "I… am". Then shift to "I" on the inhale, "am" on the exhale. After a while, let the words fade into nothingness, and just stay with observing the breath.</p>
+    <p class="src">A Sufi-inspired Demidov practice for sensing the "I Am" and for singularity</p>
+    <ol class="steps">
+      <li>Find a quiet space to sit or lie down comfortably. Sense the asana of your position. Allow your body to settle and your breath to soften.</li>
+      <li>Become aware of your natural breathing. No need to control it, just notice.</li>
+      <li>On the inhale, say internally, or as a whisper or quietly voiced, <b>Ana</b>, with the stress on the second syllable: An-aa. Let it settle more and more in your centre.</li>
+      <li>On the exhale, repeat softly: <b>Ana</b>.</li>
+      <li>Continue this rhythm. Inhale, Ana. Exhale, Ana. Let the word gently mirror your existence, not as a thought but as a sensation. You are not affirming anything. You are simply being.</li>
+      <li>After a few minutes, shift to: inhale <b>Ana</b>, exhale <b>Hu</b> (The One, divine presence). This rhythm becomes a living echo of "I… am".</li>
+      <li>Then shift to <b>I</b> on the inhale, <b>am</b> on the exhale. After a while, let the words fade into nothingness, and just stay with observing the breath.</li>
+    </ol>
     <h4>Asana of body position in space</h4>
-    <p>When you feel a sense of stillness, allow the eyes to gently open. Let the space arrive to you, without seeking. Allow the eye to land on a specific point in space. Let that point be admitted through the breath, not stared at but received. Follow the body's natural urge to move toward that point, slowly, intuitively. Don't decide in advance how the body will be when it arrives. Let the body decide. Let it settle. When a clear sense of being singularly in that place is fully present, and only then, say out loud: "I am." Notice what that feels like. Then let the eye land on a new point, and repeat. Not too many times; the point is not repetition, but to truly sense the asana of each shift.</p>
+    <ol class="steps">
+      <li>When you feel a sense of stillness, allow the eyes to gently open. Let the space arrive to you, without seeking. Let it become part of your sense of being completely singular in the here and now.</li>
+      <li>Allow the eye to land on a specific point in space. Let that point be admitted through the breath: not stared at, but received.</li>
+      <li>Follow the body's natural urge to move toward that point, slowly, intuitively. Don't decide in advance how the body will be when it arrives. Let the body decide. Let it settle.</li>
+      <li>Wait until you feel a clear sense of being singularly in that place: "All of me is sitting, standing, leaning, lying…"</li>
+      <li>When that sensation of unity is fully present, and only then, say out loud: <b>"I am."</b> Notice what that feels like.</li>
+      <li>Let the eye gently land on a new point, and repeat. Not too many times. The point is not repetition, but to truly sense the asana of each shift.</li>
+    </ol>
+    <ul class="how">
+      <li>Each stage is spoken and timed, with the current word shown in the orb.</li>
+      <li>In the Asana section you tap when all of you is there; three points, then let it go.</li>
+    </ul>
   </div>
-  <p class="foot" style="margin-top:.5rem">Texts from Demidov Studio London · demidovstudiolondon.com</p>
+  <p class="foot" style="margin-top:.5rem">Texts © Demidov Studio London · demidovstudiolondon.com</p>
 </section>
 
 <!-- ================= SESSION ================= -->
@@ -466,7 +524,8 @@ input[type=range]::-moz-range-thumb{width:1.5rem;height:1.5rem;border-radius:50%
         <circle cx="50" cy="50" r="32" fill="none" stroke="var(--acc2)" stroke-width=".8" opacity="0"><animate id="p2r" attributeName="r" from="32" to="52" dur="1.7s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.2 0.6 0.3 1"/><animate id="p2o" attributeName="opacity" from="0.6" to="0" dur="1.7s" begin="indefinite" fill="freeze"/></circle>
       </svg>
       <svg class="mark" id="mark" viewBox="0 0 100 100" aria-hidden="true"><g id="markdef" fill="none" stroke-linecap="round"><circle cx="49.06" cy="49.66" r="30.00" stroke="currentColor" stroke-width="1.0"/><circle cx="48.99" cy="48.39" r="29.10" stroke="currentColor" stroke-width="1.0"/><circle cx="50.29" cy="47.22" r="28.20" stroke="#D33021" stroke-width="1.25"/><circle cx="52.57" cy="47.34" r="27.30" stroke="currentColor" stroke-width="1.0"/><circle cx="54.56" cy="49.36" r="26.40" stroke="currentColor" stroke-width="1.0"/><circle cx="54.76" cy="52.75" r="25.50" stroke="#D33021" stroke-width="1.25"/><circle cx="52.40" cy="55.93" r="24.60" stroke="currentColor" stroke-width="1.0"/><circle cx="47.99" cy="57.02" r="23.70" stroke="currentColor" stroke-width="1.0"/></g></svg>
-      <div class="core" id="core"><svg class="wave" viewBox="0 0 120 40" preserveAspectRatio="none" id="wave"></svg><span id="coreText"></span></div>
+      <div class="core" id="core"><svg class="wave" viewBox="0 0 120 40" preserveAspectRatio="none" id="wave"></svg></div>
+      <div class="corelbl"><span id="coreText"></span></div>
     </div>
     <div class="perc" id="perc"></div>
     <div class="prompt" id="prompt"></div>
@@ -903,7 +962,7 @@ $("restSeg").addEventListener("click", e => { const b = e.target.closest("button
 $("suppSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.suppTarget = +b.dataset.v; save(); renderHome(); });
 $("lumpSeg").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; settings.lumpRounds = +b.dataset.v; save(); renderHome(); });
 $("freedomSw").addEventListener("click", e => { settings.freedomAfter = !settings.freedomAfter; save(); e.currentTarget.setAttribute("aria-checked", settings.freedomAfter); });
-const EX = { lump:{ name:"Lump of Faith", sub:"with three minutes of freedom", mins:"12 min" }, ana:{ name:"ANA Breath", sub:"meditation and asana", mins:"15 min" } };
+const EX = { lump:{ name:"Lump of Faith", sub:"with three minutes of freedom", mins:"About 12 min" }, ana:{ name:"ANA Breath", sub:"meditation and asana", mins:"About 15 min" } };
 const EXICON = { lump:'<path d="M12 3l2.4 6.1L21 10l-5 4.2 1.6 6.6L12 17.3 6.4 20.8 8 14.2 3 10l6.6-.9z"/>', ana:'<path d="M3 13c3-5 6-5 9 0s6 5 9 0"/><path d="M3 18c3-5 6-5 9 0s6 5 9 0" opacity=".45"/>' };
 function weekKeys(){ const today = new Date(), mon = new Date(today); mon.setDate(today.getDate() - ((today.getDay() + 6) % 7)); const ks = []; for(let i = 0; i < 7; i++){ const d = new Date(mon); d.setDate(mon.getDate() + i); ks.push(dkey(d)); } return ks; }
 function renderSupp(log){
@@ -911,8 +970,8 @@ function renderSupp(log){
   Object.keys(EX).forEach(k => {
     const done = log.filter(e => e.mode === k && wk.has(e.d)).length, tgt = settings.suppTarget;
     const last = [...log].reverse().find(e => e.mode === k);
-    const b = document.createElement("button"); b.innerHTML = `<span class="ic"><svg class="i" viewBox="0 0 24 24">${EXICON[k]}</svg></span><b></b><small></small><div class="w"></div><em></em>`;
-    b.querySelector("b").textContent = EX[k].name; b.querySelector("small").textContent = EX[k].mins + " · " + EX[k].sub;
+    const b = document.createElement("button"); b.innerHTML = `<span class="ic"><svg class="i" viewBox="0 0 24 24">${EXICON[k]}</svg></span><div class="w"></div><b></b><small></small><em></em>`;
+    b.querySelector("b").textContent = EX[k].name; b.querySelector("small").textContent = EX[k].mins; b.title = EX[k].mins + " · " + EX[k].sub;
     b.querySelector("em").textContent = done >= tgt ? "Done this week" : last ? "Last: " + new Date(last.at || last.d).toLocaleDateString("en-GB", { weekday:"short", day:"numeric", month:"short" }) : "Not yet this week";
     const w = b.querySelector(".w"); for(let i = 0; i < Math.max(tgt, done); i++){ const d = document.createElement("i"); if(i < done) d.className = "d"; w.appendChild(d); }
     w.appendChild(b.querySelector("em"));
